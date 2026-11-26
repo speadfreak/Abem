@@ -1,0 +1,23 @@
+# humans.txt — ABEM RESTAURANT
+
+/* TEAM */
+Site: Abem Restaurant
+Role: Flagship Ethiopian dining house, Addis Ababa
+Designer & Developer: Joseph James
+Full-stack build, brand system "Abem Ember", Abem Flow ordering engine,
+admin CMS, delivery architecture.
+
+/* SITE */
+Standards: HTML5, CSS3, TypeScript, WCAG 2.1 AA targets
+Components: Next.js 16 App Router, Tailwind CSS 4, shadcn/ui, Framer Motion, GSAP + ScrollTrigger, Lenis smooth scroll, Prisma ORM on Neon Postgres
+Fonts: Playfair Display, Manrope, Noto Sans Ethiopic, Noto Serif Ethiopic (Ethiopic script support)
+Language: English / Amharic (አማርኛ)
+Doctype: HTML5
+IDE: AI-assisted development
+
+/* THANKS */
+The Ethiopian coffee farmers, teff growers, spice market women and the
+azmari tradition — this site would smell better if browsers supported
+aroma. One day.
+
+Designed & Developed by Joseph James
