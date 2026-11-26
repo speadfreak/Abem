@@ -1,6 +1,6 @@
 # ABEM RESTAURANT — Flagship Website, CMS & Abem Flow Platform
 
-> Where fire meets heritage — Ethiopia on one table.
+> Luxurious flavor, fired daily — Addis Ababa's flame kitchen.
 
 The complete, production-ready platform for **Abem Restaurant** (Addis Ababa): a cinematic public website in English + Amharic, a full no-code admin CMS, **Abem Flow** (smart ordering + service management: table-QR, kitchen display, waiter board, rider dispatch, live tracking) and the **Abem Rewards** loyalty engine — all running on Next.js 16 + Neon Postgres, deploy-ready for Vercel.
 
