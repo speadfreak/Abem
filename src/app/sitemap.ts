@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/rewards", priority: 0.6, freq: "monthly" },
     { path: "/track", priority: 0.4, freq: "monthly" },
     { path: "/careers", priority: 0.4, freq: "monthly" },
-    { path: "/legal", priority: 0.2, freq: "yearly" },
+    { path: "/legal", priority: 0.2, freq: "monthly" },
   ];
   return pages.map((p) => ({
     url: `${BASE}${p.path}`,
