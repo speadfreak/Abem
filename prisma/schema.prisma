@@ -1,0 +1,370 @@
+// ABEM RESTAURANT — Prisma schema (Neon Postgres)
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────── ADMIN / AUTH ───────────────────────────
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("STAFF") // OWNER | MANAGER | STAFF
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  actor     String
+  action    String
+  entity    String
+  entityId  String?
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ─────────────────────────── SETTINGS / CMS ───────────────────────────
+
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+// Editable page sections (hero copy, visibility, ordering)
+model PageSection {
+  id      String  @id @default(cuid())
+  page    String // home | about | menu | ...
+  key     String // hero | story | cta ...
+  kind    String  @default("custom")
+  data    Json
+  order   Int     @default(0)
+  visible Boolean @default(true)
+
+  @@unique([page, key])
+  @@index([page])
+}
+
+// ─────────────────────────── MENU ───────────────────────────
+
+model MenuCategory {
+  id           String     @id @default(cuid())
+  slug         String     @unique
+  name         String
+  nameAm       String?
+  description  String?
+  descriptionAm String?
+  station      String     @default("main") // grill | wat | cold | drinks | dessert | main
+  image        String?
+  order        Int        @default(0)
+  active       Boolean    @default(true)
+  items        MenuItem[]
+}
+
+model MenuItem {
+  id            String       @id @default(cuid())
+  categoryId    String
+  category      MenuCategory @relation(fields: [categoryId], references: [id])
+  slug          String       @unique
+  name          String
+  nameAm        String?
+  description   String?
+  descriptionAm String?
+  price         Float
+  image         String?
+  tags          Json         @default("[]") // ["signature","vegetarian","vegan","gluten-free"]
+  spicyLevel    Int          @default(0) // 0-3
+  isVegan       Boolean      @default(false)
+  isFasting     Boolean      @default(false) // Tsom
+  isChefPick    Boolean      @default(false)
+  isFeatured    Boolean      @default(false)
+  available     Boolean      @default(true) // false = "86'd"
+  order         Int          @default(0)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([categoryId])
+}
+
+// ─────────────────────────── RESERVATIONS ───────────────────────────
+
+model Reservation {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  email     String?
+  phone     String
+  date      DateTime
+  time      String // "19:30"
+  party     Int
+  area      String   @default("indoor") // indoor | garden | vip
+  occasion  String?
+  notes     String?
+  status    String   @default("PENDING") // PENDING | CONFIRMED | DECLINED | SEATED | CANCELLED
+  adminNote String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([date])
+  @@index([status])
+}
+
+// ─────────────────────────── GALLERY / TEAM / SOCIAL ───────────────────────────
+
+model GalleryItem {
+  id        String  @id @default(cuid())
+  title     String
+  titleAm   String?
+  category  String  @default("general") // food | interior | events | coffee | team
+  type      String  @default("IMAGE") // IMAGE | VIDEO
+  url       String
+  thumb     String?
+  order     Int     @default(0)
+  active    Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+model TeamMember {
+  id     String  @id @default(cuid())
+  name   String
+  nameAm String?
+  role   String
+  bio    String?
+  photo  String?
+  social Json?
+  order  Int     @default(0)
+  active Boolean @default(true)
+}
+
+model Testimonial {
+  id        String  @id @default(cuid())
+  name      String
+  role      String? // "Food blogger, Addis"
+  quote     String
+  rating    Int     @default(5)
+  photo     String?
+  active    Boolean @default(true)
+  order     Int     @default(0)
+}
+
+model Faq {
+  id       String  @id @default(cuid())
+  question String
+  answer   String
+  order    Int     @default(0)
+  active   Boolean @default(true)
+}
+
+// ─────────────────────────── EVENTS & CATERING ───────────────────────────
+
+model EventPackage {
+  id           String  @id @default(cuid())
+  slug         String  @unique
+  title        String
+  titleAm      String?
+  description  String
+  capacity     String // "up to 300 guests"
+  priceFrom    Float?
+  image        String?
+  features     Json    @default("[]")
+  order        Int     @default(0)
+  active       Boolean @default(true)
+}
+
+// ─────────────────────────── STORIES (BLOG) ───────────────────────────
+
+model Story {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  titleAm     String?
+  excerpt     String
+  content     String
+  cover       String?
+  category    String   @default("culture")
+  tags        Json     @default("[]")
+  author      String   @default("Abem Editorial")
+  readMinutes Int      @default(4)
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─────────────────────────── CAREERS ───────────────────────────
+
+model CareerOpening {
+  id          String  @id @default(cuid())
+  title       String
+  type        String  @default("FULL_TIME")
+  location    String  @default("Addis Ababa")
+  description String
+  active      Boolean @default(true)
+  order       Int     @default(0)
+}
+
+model JobApplication {
+  id        String   @id @default(cuid())
+  openingId String?
+  opening   String?
+  name      String
+  email     String
+  phone     String
+  cover     String?
+  createdAt DateTime @default(now())
+}
+
+// ─────────────────────────── CONTACT / NEWSLETTER ───────────────────────────
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([read])
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+// ─────────────────────────── BRANCHES ───────────────────────────
+
+model Branch {
+  id            String  @id @default(cuid())
+  name          String
+  address       String
+  addressAm     String?
+  phone         String
+  mapEmbedUrl   String  @default("")
+  directionsUrl String  @default("")
+  hours         Json? // overrides per branch
+  isPrimary     Boolean @default(false)
+  active        Boolean @default(true)
+  order         Int     @default(0)
+}
+
+// ─────────────────────────── ABEM FLOW · ORDERING ───────────────────────────
+
+model DiningTable {
+  id       String  @id @default(cuid())
+  label    String // "T01"
+  seats    Int     @default(4)
+  zone     String  @default("indoor")
+  qrToken  String  @unique
+  active   Boolean @default(true)
+}
+
+model ServiceRequest {
+  id         String    @id @default(cuid())
+  tableToken String
+  tableLabel String
+  type       String // WAITER | BILL | WATER
+  status     String    @default("OPEN") // OPEN | DONE
+  createdAt  DateTime  @default(now())
+  resolvedAt DateTime?
+
+  @@index([status])
+}
+
+model Order {
+  id            String    @id @default(cuid())
+  code          String    @unique // ABM-XXXXXX
+  type          String // DINEIN | TAKEAWAY | DELIVERY
+  tableToken    String?
+  tableLabel    String?
+  customerName  String
+  phone         String
+  address       String?
+  landmark      String?
+  zoneId        String?
+  zoneName      String?
+  deliveryFee   Float     @default(0)
+  subtotal      Float
+  discount      Float     @default(0)
+  total         Float
+  couponCode    String?
+  paymentMethod String    @default("COD")
+  paymentStatus String    @default("UNPAID") // UNPAID | PAID
+  status        String    @default("NEW") // NEW | PREPARING | READY | OUT_FOR_DELIVERY | COMPLETED | CANCELLED
+  station       String?
+  scheduledFor  DateTime?
+  notes         String?
+  otp           String?
+  riderId       String?
+  riderName     String?
+  pointsEarned  Int       @default(0)
+  loyaltyPhone  String?
+  items         Json // [{id,name,nameAm,price,qty,notes,image,tags,station}]
+  statusLog     Json      @default("[]") // [{status, at, by?}]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model DeliveryZone {
+  id       String  @id @default(cuid())
+  name     String
+  fee      Float
+  minOrder Float   @default(0)
+  etaMin   Int     @default(30)
+  etaMax   Int     @default(60)
+  active   Boolean @default(true)
+  order    Int     @default(0)
+}
+
+model Rider {
+  id     String  @id @default(cuid())
+  name   String
+  phone  String
+  status String  @default("AVAILABLE") // AVAILABLE | BUSY | OFFLINE
+  active Boolean @default(true)
+}
+
+model Coupon {
+  id        String    @id @default(cuid())
+  code      String    @unique
+  type      String    @default("PERCENT") // PERCENT | FIXED
+  value     Float
+  minOrder  Float     @default(0)
+  maxUses   Int?
+  usedCount Int       @default(0)
+  active    Boolean   @default(true)
+  expiresAt DateTime?
+}
+
+// ─────────────────────────── LOYALTY · ABEM REWARDS ───────────────────────────
+
+model LoyaltyMember {
+  id           String   @id @default(cuid())
+  phone        String   @unique
+  name         String
+  points       Int      @default(0)
+  lifetime     Int      @default(0)
+  tier         String   @default("Bronze") // Bronze | Silver | Gold | Ember
+  referralCode String   @unique
+  referredBy   String?
+  birthday     String? // MM-DD
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
