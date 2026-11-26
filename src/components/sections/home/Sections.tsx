@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Flame, Quote, Star, Timer, Bike, ChefHat, UtensilsCrossed, Coffee, Music, Sparkles, Landmark } from "lucide-react";
+import { ArrowRight, Flame, Quote, Star, Timer, Bike, ChefHat, UtensilsCrossed, Coffee } from "lucide-react";
 import { Reveal, Counter, Marquee, SectionHeading } from "@/components/shared/Primitives";
 import Magnetic from "@/components/shared/Magnetic";
 import EmberCanvas from "@/components/brand/EmberCanvas";
@@ -64,10 +64,10 @@ export function StorySection({ stats }: { stats: { years: number; dishes: number
       <div className="container-x grid items-center gap-14 lg:grid-cols-2">
         <div ref={imgWrap} className="relative">
           <div className="story-img-a img-frame relative aspect-[4/5] w-[82%]">
-            <Image src="/images/coffee-ceremony.jpg" alt="Traditional Ethiopian coffee ceremony at Abem" fill sizes="(max-width:1024px) 90vw, 40vw" className="object-cover" />
+            <Image src="/images/dishes/burger.jpg" alt="Flame-grilled gourmet burger at Abem" fill sizes="(max-width:1024px) 90vw, 40vw" className="object-cover" />
           </div>
           <div className="story-img-b img-frame absolute -bottom-10 right-0 aspect-[4/3] w-[55%]">
-            <Image src="/images/interior.jpg" alt="Abem dining hall at night" fill sizes="(max-width:1024px) 55vw, 24vw" className="object-cover" />
+            <Image src="/images/interior.jpg" alt="Abem flame kitchen dining hall at night" fill sizes="(max-width:1024px) 55vw, 24vw" className="object-cover" />
           </div>
           <div className="absolute -left-4 top-8 rounded-2xl glass px-5 py-4" aria-hidden="true">
             <p className="font-display text-3xl text-gold">15</p>
@@ -79,19 +79,19 @@ export function StorySection({ stats }: { stats: { years: number; dishes: number
           <SectionHeading
             align="left"
             eyebrow={lang === "am" ? "ታሪካችን" : "Our Story"}
-            title={lang === "am" ? "ከአራት ሰሌዳ ወደ አገር ልብ" : "From four tables to the heart of Addis"}
+            title={lang === "am" ? "ከአራት ሰሌዳ ወደ እሳቱ" : "From four tables to the flame"}
             titleAm={undefined}
             className="max-w-xl"
           />
           <Reveal delay={0.1}>
             <p className="lead mt-6">
-              In 2011, Abem opened with four mesobs, a mitad that never cooled, and a promise: cook the Ethiopia we grew
-              up tasting — slowly, honestly, without shortcuts. Today the room hums with three languages of laughter and
-              the pot of doro wot still gets six unhurried hours.
+              In 2011, Abem opened with four tables, a grill that never cooled, and a promise: serve the food we love
+              — done properly, without shortcuts. Today that promise looks like a luxe flame kitchen: burgers seared
+              over real fire, pizza from a wood oven, shawarma carved to order and chicken fried to a shatter.
             </p>
             <p className="lead mt-4">
-              Everything is anchored in heritage: teff from the Gojjam highlands, berbere toasted and ground every
-              Monday, coffee roasted at your table. The fire is old. The welcome is older.
+              The craft is restaurant-grade and the pace is street-fast. And woven through it all — our Ethiopian
+              heritage: berbere butter, ayib, fresh teff injera and a buna ceremony that still closes long nights.
             </p>
           </Reveal>
 
@@ -142,7 +142,7 @@ export function FeaturedCarousel({ dishes }: { dishes: Dish[] }) {
             align="left"
             eyebrow={lang === "am" ? "የሼፍ ምርጫ" : "From the fire"}
             title={lang === "am" ? "ልዩ ምግቦቻችን" : "Signature plates"}
-            description="The dishes our regulars dream about — served on injera we bake every morning."
+            description="The plates our regulars dream about — hand-built, flame-kissed, never rushed off the grill."
             className="max-w-2xl"
           />
           <Reveal delay={0.1}>
@@ -227,13 +227,13 @@ export function ChefSpotlight() {
           />
           <Reveal delay={0.12}>
             <blockquote className="mt-6 border-l-2 border-gold/50 pl-5 text-lg leading-relaxed text-cream/85">
-              “My mother taught me that berbere is not a spice — it is a season of work: planting, drying, toasting,
-              grinding. When you taste our doro wot you taste all of it. I don&apos;t rush the onions, and I never,
-              ever serve a sauce that hasn&apos;t had its six hours.”
+              “Fast food gets away with shortcuts. We don&apos;t. Our patties are ground every morning, our pizza
+              dough cold-ferments for two days, the shawarma marinates overnight. Speed is only impressive when the
+              fire underneath it is real — and ours has been burning for fifteen years.”
             </blockquote>
             <p className="mt-5 text-sm text-muted-foreground">
-              Fifteen years at the pot. Trained in her mother&apos;s kitchen in Gondar. Guarding one recipe like a
-              national secret — and sharing every other one.
+              Fifteen years at the grill. Trained in her mother&apos;s kitchen in Gondar and sharpened on the line —
+              guarding the flame like a national secret, and sharing everything else.
             </p>
             <Link href="/about" className="btn-ghost btn-sm mt-8">
               Meet the team
@@ -248,10 +248,10 @@ export function ChefSpotlight() {
 /* ─────────────── Experience bento grid ─────────────── */
 
 const BENTO = [
-  { icon: Coffee, title: "Buna Ceremony", am: "የቡና ሥርዓት", desc: "Green beans roasted at your table, frankincense, three unhurried cups.", href: "/experience", span: "md:col-span-2", img: "/images/coffee-ceremony.jpg" },
-  { icon: Flame, title: "Charcoal Grill", am: "ጥብስ", desc: "Shekla tibs that arrive still singing.", href: "/menu", span: "", img: "/images/dishes/tibs.jpg" },
-  { icon: Music, title: "Azmari Nights", am: "አዝማሪ ምሽት", desc: "Masinko, laughter and improvised verse every Friday & Saturday.", href: "/experience", span: "", img: "/images/music.jpg" },
-  { icon: Sparkles, title: "Gursha Culture", am: "ጉርሻ", desc: "The bite you feed a friend — the most Ethiopian thing we serve.", href: "/experience", span: "md:col-span-2", img: "/images/gursha.jpg" },
+  { icon: Flame, title: "Flame-Grilled Burgers", am: "በርገር", desc: "Ground fresh every morning, seared over real fire, stacked tall.", href: "/menu", span: "md:col-span-2", img: "/images/dishes/burger.jpg" },
+  { icon: UtensilsCrossed, title: "Wood-Fired Pizza", am: "ፒዛ", desc: "Two-day dough, leopard-spotted crust, molten edges.", href: "/menu", span: "", img: "/images/dishes/pizza.jpg" },
+  { icon: Timer, title: "Shawarma Bar", am: "ሻዋርማ", desc: "Marinated overnight, carved to order, wrapped hot.", href: "/menu", span: "", img: "/images/dishes/shawarma.jpg" },
+  { icon: Coffee, title: "Heritage Corner", am: "የባህል ምግብ", desc: "Chechebsa mornings, firfir, injera and the buna ceremony — our roots, still burning.", href: "/experience", span: "md:col-span-2", img: "/images/dishes/chechebsa.jpg" },
 ];
 
 export function ExperienceBento() {
@@ -262,7 +262,7 @@ export function ExperienceBento() {
         <SectionHeading
           eyebrow={lang === "am" ? "ልምዱ" : "The experience"}
           title={lang === "am" ? "ከምግብ በላይ" : "More than a meal"}
-          description="Ceremony, music, fire and the rituals that make an Ethiopian table feel like home."
+          description="Real fire, real craft and the rituals that make an Abem table feel like home."
         />
         <div className="mt-12 grid gap-5 md:grid-cols-4">
           {BENTO.map((b, i) => (
@@ -288,10 +288,10 @@ export function ExperienceBento() {
 /* ─────────────── Testimonials slider ─────────────── */
 
 const TESTIMONIALS = [
-  { name: "Selamawit T.", role: "Addis Ababa", quote: "The doro wot tastes like my grandmother's Sunday — but plated like Paris. I cried a little, then ordered more." },
-  { name: "Marcus Bell", role: "Travel writer, London", quote: "Abem is the Ethiopian meal I measure all others against. The buna ceremony alone is worth the flight." },
-  { name: "Hirut M.", role: "Gourmet Club chair", quote: "We came for the kitfo and stayed until the tej ran out. Service feels like family, not staff." },
-  { name: "Daniel Kim", role: "Chef, Seoul", quote: "That shekla tibs — smoke, rosemary, fire — is one of the best plates I ate this year, anywhere." },
+  { name: "Selamawit T.", role: "Addis Ababa", quote: "The flame burger tastes like a five-star kitchen hiding inside a late-night run. I cried a little, then ordered more." },
+  { name: "Marcus Bell", role: "Travel writer, London", quote: "Abem is the burger I measure all others against — and the pizza out-pizzas half of Italy. I keep coming back." },
+  { name: "Hirut M.", role: "Gourmet Club chair", quote: "We came for the shawarma and stayed until the milkshakes ran out. Service feels like family, not staff." },
+  { name: "Daniel Kim", role: "Chef, Seoul", quote: "That wood-fired crust — leopard spots, molten edge — is one of the best plates I ate this year, anywhere." },
 ];
 
 export function Testimonials() {
@@ -391,7 +391,7 @@ export function FlowTeaser() {
             className="ticket absolute left-0 top-0 w-[88%] rotate-[-3deg] p-5"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-gold">Abem Flow · ABM-K7D2QM</p>
-            <p className="mt-1 font-display text-lg text-cream">2× Doro Wot · 1× Beyaynetu</p>
+            <p className="mt-1 font-display text-lg text-cream">2× Flame-Grilled Burger · 1× Loaded Fries</p>
             <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-highland/25 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#8fd0a0]">In the fire · 6 min</p>
           </motion.div>
           <motion.div
@@ -400,7 +400,7 @@ export function FlowTeaser() {
             className="ticket absolute right-0 top-28 w-[86%] rotate-[2deg] p-5"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-gold">Delivery · Zone Bole</p>
-            <p className="mt-1 font-display text-lg text-cream">1× Special Kitfo · 1× House Tej</p>
+            <p className="mt-1 font-display text-lg text-cream">1× Pepperoni Pizza · 1× Vanilla Shake</p>
             <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-gold/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gold">On the way · ETA 12 min</p>
           </motion.div>
           <motion.div
@@ -409,7 +409,7 @@ export function FlowTeaser() {
             className="ticket relative left-8 top-56 w-[88%] rotate-[-1deg] p-5"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-gold">Table T07 · QR order</p>
-            <p className="mt-1 font-display text-lg text-cream">1× Buna Ceremony · 2× Macchiato</p>
+            <p className="mt-1 font-display text-lg text-cream">1× Chicken Shawarma · 2× Macchiato</p>
             <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-ember/25 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#ff9d8f]">New ticket</p>
           </motion.div>
           <div className="h-[420px]" />
@@ -422,9 +422,9 @@ export function FlowTeaser() {
 /* ─────────────── Gallery strip ─────────────── */
 
 const STRIP = [
-  "/images/hero-poster.jpg", "/images/dishes/doro-wat.jpg", "/images/coffee-ceremony.jpg",
-  "/images/dishes/tibs.jpg", "/images/interior.jpg", "/images/dishes/kitfo.jpg",
-  "/images/dishes/beyaynetu.jpg", "/images/events.jpg",
+  "/images/hero-poster.jpg", "/images/dishes/burger.jpg", "/images/dishes/pizza.jpg",
+  "/images/dishes/shawarma.jpg", "/images/interior.jpg", "/images/dishes/fried-chicken.jpg",
+  "/images/dishes/loaded-fries.jpg", "/images/dishes/wings.jpg",
 ];
 
 export function GalleryStrip() {
@@ -471,7 +471,7 @@ export function CtaBand({ phone }: { phone: string }) {
         <Reveal>
           <span className="eyebrow eyebrow-center justify-center">Your table is warm</span>
           <h2 className="display-1 mt-4 text-cream">
-            {lang === "am" ? "እንግዳዎቻችን ይጠብቋሉ" : <>The mesob is set. <span className="gold-text">Gursha awaits.</span></>}
+            {lang === "am" ? "ሰሌዳዎ ተዘጋጅቷል" : <>The grill is hot. <span className="gold-text">Your table is ready.</span></>}
           </h2>
           <p className="lead mx-auto mt-5 max-w-xl">
             Garden seating under the lights, VIP mesobs for eight, or the front-row of the buna ceremony.

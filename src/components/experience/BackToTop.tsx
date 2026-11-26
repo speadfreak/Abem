@@ -33,7 +33,7 @@ export default function BackToTop() {
     <button
       onClick={toTop}
       aria-label="Back to top"
-      className={`fixed bottom-5 right-5 z-[75] hidden h-12 w-12 items-center justify-center rounded-full glass text-gold transition-all duration-500 hover:bg-gold/15 md:flex ${
+      className={`abem-floating fixed bottom-5 right-5 z-[75] hidden h-12 w-12 items-center justify-center rounded-full glass text-gold transition-all duration-500 hover:bg-gold/15 md:flex ${
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"
       }`}
     >

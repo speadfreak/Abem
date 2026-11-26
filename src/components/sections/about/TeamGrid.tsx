@@ -19,7 +19,7 @@ const FALLBACK_TEAM: TeamMemberDTO[] = [
     name: "Chef Almaz Bekele",
     nameAm: "ሼፍ አልማዝ በቀለ",
     role: "Executive Chef",
-    bio: "Fifteen years at the berbere pot. Trained in her mother's kitchen in Gondar, sharpened in Addis. Guards the doro wot recipe like a national secret.",
+    bio: "Fifteen years at the flame. Trained in her mother's kitchen in Gondar, sharpened on the line. Guards the patty grind and the pizza dough like a national secret.",
     photo: "/images/chef.jpg",
   },
   {
@@ -27,15 +27,15 @@ const FALLBACK_TEAM: TeamMemberDTO[] = [
     name: "Dawit Tesfaye",
     nameAm: "ዳዊት ተስፋዬ",
     role: "Head of the Grill",
-    bio: "Charcoal whisperer. If the tibs aren't singing when they leave the shekla, they don't leave.",
+    bio: "Charcoal whisperer. If the patties aren't singing when they leave the grill, they don't leave.",
     photo: "/images/dishes/tibs.jpg",
   },
   {
     id: "hanna",
     name: "Hanna Girma",
     nameAm: "ሐና ግርማ",
-    role: "Buna Ceremony Host",
-    bio: "Roasts green beans tableside with the patience of the highlands. Ask her about the third cup.",
+    role: "Shawarma & Buna Host",
+    bio: "Carves the spit with surgical patience and roasts buna tableside. Ask her about the third cup.",
     photo: "/images/coffee-ceremony.jpg",
   },
   {
@@ -43,7 +43,7 @@ const FALLBACK_TEAM: TeamMemberDTO[] = [
     name: "Yonas Abebe",
     nameAm: "ዮናስ አበበ",
     role: "General Manager",
-    bio: "Runs the floor like an orchestra — gursha, tej and conversation in perfect time.",
+    bio: "Runs the floor like an orchestra — burgers, buna and conversation in perfect time.",
     photo: "/images/interior.jpg",
   },
 ];

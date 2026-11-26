@@ -13,12 +13,12 @@ const STATS: Stat[] = [
 ];
 
 const HONOURS = [
-  "Best Ethiopian Kitchen — Addis Dining Awards",
-  "Ceremonial Coffee House of the Year",
+  "Best Burger in Addis — Addis Dining Awards",
+  "Wood-Fired Pizza of the Year",
   "Travel & Leisure — top tables of Addis",
   "Gursha Hospitality Prize",
-  "Best Fasting Menu — Tsom Guide",
-  "Azmari Night of the Year",
+  "Best Late-Night Kitchen — Bole Guide",
+  "Ceremonial Coffee House of the Year",
 ];
 
 export default function AwardsStrip() {

@@ -15,14 +15,14 @@ const MILESTONES: Milestone[] = [
   {
     year: "2011",
     tag: "The beginning",
-    title: "Four tables & one mitad",
-    copy: "Almaz Bekele fires her first clay mitad on a Bole side street — four tables, one pot of berbere, and a doro wot that takes six hours. The neighborhood starts arriving by smell alone.",
+    title: "Four tables & one fire",
+    copy: "Almaz Bekele lights her first charcoal grill on a Bole side street — four tables, one pot of berbere, and dishes done the long way. The neighborhood starts arriving by smell alone.",
   },
   {
     year: "2014",
     tag: "Under the lights",
     title: "The garden opens",
-    copy: "We knock a hole in the back wall and plant a courtyard garden — thirty mesob seats under string lights, tej on ice, and the first azmari Friday. Addis discovers it can dine under eucalyptus.",
+    copy: "We knock a hole in the back wall and plant a courtyard garden — thirty seats under string lights, tej on ice, and the first azmari Friday. Addis discovers it can dine under eucalyptus.",
   },
   {
     year: "2017",
@@ -31,16 +31,16 @@ const MILESTONES: Milestone[] = [
     copy: "The second house opens near Congo Street: same recipes, new stove, and a bar built entirely around the berele. Two branches, one standard — nothing leaves the kitchen in a hurry.",
   },
   {
-    year: "2021",
-    tag: "Recognition",
-    title: "The guides come calling",
-    copy: "National culinary awards, travel-writer pilgrimages and a waiting list for the Ember Room. We celebrate the only way we know: a long-table feast for the whole street.",
+    year: "2023",
+    tag: "The flame kitchen",
+    title: "Burgers, pizza & the new fire",
+    copy: "We rebuild the kitchen around a live flame line and a wood oven: patties ground every morning, two-day pizza dough, a shawarma spit carved to order. Street-speed, steakhouse craft — and the heritage corner stays right where it was.",
   },
   {
     year: "Today",
     tag: "Two houses, one fire",
     title: "The flagship era",
-    copy: "One kitchen school, two branches, 120 dishes, a quarter of a million guests served — and the mitad still lit at six every morning, exactly where it all began.",
+    copy: "Two branches, a quarter of a million guests served — and the charcoal still lit at six every morning, exactly where it all began.",
     current: true,
   },
 ];

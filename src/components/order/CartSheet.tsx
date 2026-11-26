@@ -227,13 +227,13 @@ export default function CartSheet({
             <span className="flex h-20 w-20 items-center justify-center rounded-full border border-ember/40 bg-ember/10">
               <UtensilsCrossed className="h-8 w-8 text-ember" aria-hidden="true" />
             </span>
-            <p className="display-3 text-cream">Your mesob is empty</p>
-            <p className="text-sm text-muted-foreground">Add a doro wat, a kitfo, or a fasting platter — the fire is waiting.</p>
+            <p className="display-3 text-cream">Your tray is empty</p>
+            <p className="text-sm text-muted-foreground">Add a flame burger, a wood-fired pizza or crispy wings — the fire is waiting.</p>
             <button onClick={() => onOpenChange(false)} className="btn-gold btn-sm mt-2">Browse the menu</button>
           </div>
         ) : step === "cart" ? (
           <>
-            <div className="flex-1 overflow-y-auto px-5 py-4" role="region" aria-label="Cart items">
+            <div className="min-h-0 flex-1 touch-auto overscroll-contain overflow-y-auto px-5 py-4" role="region" aria-label="Cart items">
               <ul className="space-y-3">
                 {cart.items.map((l) => (
                   <li key={l.id} className="ticket flex items-center gap-3 p-3">
@@ -311,7 +311,7 @@ export default function CartSheet({
           </>
         ) : (
           <>
-            <form onSubmit={onSubmit} className="flex-1 overflow-y-auto px-5 py-4" noValidate>
+            <form id="abem-checkout-form" onSubmit={onSubmit} className="min-h-0 flex-1 touch-auto overscroll-contain overflow-y-auto px-5 py-4" noValidate>
               {/* Contact */}
               <div className="grid gap-3">
                 <div>
@@ -427,7 +427,7 @@ export default function CartSheet({
                 <button type="button" onClick={() => setStep("cart")} className="btn-ghost btn-sm shrink-0" aria-label="Back to cart">
                   <ChevronLeft className="h-4 w-4" aria-hidden="true" />
                 </button>
-                <button type="submit" onClick={onSubmit} disabled={submitting} className="btn-gold flex-1 disabled:cursor-wait disabled:opacity-60">
+                <button type="submit" form="abem-checkout-form" disabled={submitting} className="btn-gold flex-1 disabled:cursor-wait disabled:opacity-60">
                   {submitting ? "Firing the kitchen…" : `Place order · ${formatETB(total)}`}
                 </button>
               </div>

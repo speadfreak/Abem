@@ -76,8 +76,8 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   site: {
     name: "Abem Restaurant",
     shortName: "Abem",
-    tagline: "Where fire meets heritage — Ethiopia on one table.",
-    taglineAm: "እሳትና ባህል ሲገናኙ፣ ኢትዮጵያ በአንድ ሰሌዳ ላይ።",
+    tagline: "Luxurious flavor, fired daily — Addis Ababa's flame kitchen.",
+    taglineAm: "በእሳት የሚቀጣይ ጥሩ ጣዕም — የአዲስ አበባ የእሳት ኩሽን።",
     logoUrl: "/brand/logo.png",
     founded: "2011",
     city: "Addis Ababa",
@@ -85,15 +85,15 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   hero: {
     videoUrl: "",
     posterUrl: "/images/hero-poster.jpg",
-    eyebrow: "Ethiopian Kitchen · Addis Ababa",
-    eyebrowAm: "የኢትዮጵያ እግር ምግብ · አዲስ አበባ",
-    title: "Where Fire Meets Heritage",
-    titleAm: "እሳትና ባህል ሲገናኙ",
+    eyebrow: "Luxe Flame Kitchen · Addis Ababa",
+    eyebrowAm: "የእሳት ኩሽን · አዲስ አበባ",
+    title: "Luxurious Flavor, Fired Daily",
+    titleAm: "በእሳት የሚቀጣይ ጥሩ ጣዕም",
     subtitle:
-      "Slow berbere, smoky tibs and the ritual of buna — a flagship Ethiopian dining house in the heart of Addis Ababa. Family recipes, ember fire, zero shortcuts.",
+      "Flame-grilled burgers, wood-fired pizza, shawarma carved to order and golden crispy chicken — built with restaurant craft, served at street speed. Our Ethiopian heritage still whispers through the fire.",
     subtitleAm:
-      "ቀስ ብሎ የተዘጋጀ በርበሬ፣ ጭስ ያለው ጥብስና የቡና ሥርዓት — በአዲስ አበባ ልብ የሚገኝ የቀደመት የኢትዮጵያ የምግብ ቤት።",
-    cta1: { label: "Reserve a Table", href: "/reservations" },
+      "በእሳት የተጠበሰ በርገር፣ በእሳት የተሠራ ፒዛ፣ ሻዋርማና ገርጅ ያለው ዶሮ — በምግብ ቤት ጥበብ ተሠርቶ በፍጥነት የሚቀርብ። የኢትዮጵያ ባህላችንም በእሳቱ ውስጥ ይኖራል።",
+    cta1: { label: "Order Now", href: "/order" },
     cta2: { label: "Explore the Menu", href: "/menu" },
   },
   contact: {
@@ -141,40 +141,40 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   banner: { enabled: false, text: "", textAm: "", href: "" },
   seo: {
     home: {
-      title: "Abem Restaurant — Ethiopian Fire, Heritage & Flavor | Addis Ababa",
+      title: "Abem Restaurant — Luxurious Flavor, Fired Daily | Addis Ababa",
       description:
-        "Abem is Addis Ababa's flagship Ethiopian dining house. Doro wat, kitfo, tibs and a full buna ceremony — reserve a table or order online.",
+        "Abem is Addis Ababa's luxe flame kitchen. Flame-grilled burgers, wood-fired pizza, shawarma, crispy chicken — with Ethiopian heritage woven through. Order online or reserve a table.",
       ogImage: "/images/hero-poster.jpg",
     },
     menu: {
-      title: "The Menu — Doro Wat, Kitfo, Tibs & the Fasting Table | Abem",
+      title: "The Menu — Burgers, Pizza, Shawarma & Heritage Classics | Abem",
       description:
-        "Explore Abem's full Ethiopian menu in English and Amharic. Fasting (Tsom) dishes, chef's picks and prices in ETB.",
-      ogImage: "/images/dishes/doro-wat.jpg",
+        "Explore Abem's full menu in English and Amharic. Flame-grilled burgers, wood-fired pizza, shawarma, crispy chicken, sides and heritage favorites. Prices in ETB.",
+      ogImage: "/images/dishes/burger.jpg",
     },
     reservations: {
       title: "Reserve a Table | Abem Restaurant",
-      description: "Book indoor, garden or VIP mesob seating at Abem Restaurant, Addis Ababa.",
+      description: "Book indoor, garden or VIP seating at Abem Restaurant, Addis Ababa.",
       ogImage: "/images/interior.jpg",
     },
     about: {
       title: "Our Story — Fifteen Years of Fire | Abem Restaurant",
-      description: "From a four-table injera bet to Addis Ababa's flagship Ethiopian dining house.",
+      description: "From a four-table family kitchen to Addis Ababa's luxe flame kitchen.",
       ogImage: "/images/interior.jpg",
     },
   },
   stats: { years: 15, dishes: 120, guests: 250000, awards: 18 },
   kitchen: { amberMinutes: 12, redMinutes: 22 },
   stations: {
-    "fasting-vegan": "wat",
-    "wat-alicha": "wat",
-    "grill-tibs": "grill",
-    "kitfo-raw": "cold",
-    platters: "grill",
-    "sides-breads": "grill",
+    "burgers": "grill",
+    "pizza": "oven",
+    "shawarma-wraps": "grill",
+    "chicken": "fry",
+    "sandwiches": "grill",
+    "sides": "fry",
+    heritage: "wat",
     drinks: "drinks",
     desserts: "dessert",
-    breakfast: "grill",
   },
 };
 

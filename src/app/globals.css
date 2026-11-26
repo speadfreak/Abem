@@ -395,6 +395,13 @@
     @apply relative rounded-xl border border-gold/15 bg-elevated;
     clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
   }
+
+  /* Hide floating clusters (mobile action bar, cart bar) while a modal sheet/dialog is open — prevents overlap */
+  body:has([data-slot="sheet-content"][data-state="open"]) .abem-floating,
+  body:has([data-slot="dialog-content"][data-state="open"]) .abem-floating {
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
 
 /* ───────────────────────── Keyframes ───────────────────────── */

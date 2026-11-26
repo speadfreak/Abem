@@ -149,7 +149,7 @@ export default function MenuBrowser({ categories, cart }: { categories: ApiCateg
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search doro, tibs, shiro…"
+            placeholder="Search burgers, pizza, shawarma…"
             aria-label="Search the menu"
             className="h-11 w-full rounded-full border border-gold/20 bg-card pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold/60 focus:outline-none focus:ring-2 focus:ring-gold/25"
           />

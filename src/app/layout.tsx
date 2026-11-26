@@ -3,6 +3,7 @@ import { Playfair_Display, Manrope, Noto_Sans_Ethiopic, Noto_Serif_Ethiopic } fr
 import "./globals.css";
 import AppProviders from "@/components/providers/AppProviders";
 import { getSettings, publicSettings } from "@/lib/settings";
+import { getSiteUrl } from "@/lib/site-url";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -29,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const s = await getSettings();
   const home = s.seo?.home ?? { title: "Abem Restaurant", description: "", ogImage: "" };
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+    metadataBase: new URL(getSiteUrl()),
     title: { default: home.title, template: `%s | ${s.site.name}` },
     description: home.description,
     icons: { icon: "/brand/icons/icon-192.png", apple: "/brand/icons/icon-192.png" },

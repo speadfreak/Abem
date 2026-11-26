@@ -19,7 +19,7 @@ export default async function ReservationsPage() {
         eyebrow="Reservations · ቦታ ማስያዝ"
         title="Your table is warm."
         titleAm="ሰሌዳ ያስይዙ"
-        description="Live availability across the dining hall, garden and VIP mesobs. Confirmation by SMS within the hour."
+        description="Live availability across the dining hall, garden and VIP booths. Confirmation by SMS within the hour."
         image="/images/interior.jpg"
         hours={s.hours}
         holidays={s.holidays}

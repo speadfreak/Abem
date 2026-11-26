@@ -18,19 +18,19 @@ const FALLBACK_FAQS: FaqDTO[] = [
     id: "spice-level",
     question: "How spicy is Abem food, really?",
     answer:
-      "Every dish shows a berbere heat level (0–3). Kitfo and tibs firfir run hot; alicha dishes are mild. Our kitchen will happily adjust — just note it when ordering.",
+      "Every dish shows a heat level (0–3). The Berbere Smash Burger and Fasting Firfir run hot; burgers, pizza and fried chicken are mild to medium. Our kitchen will happily adjust — just note it when ordering.",
   },
   {
     id: "fasting",
-    question: "Is there a full fasting (Tsom) menu?",
+    question: "Is there a fasting (Tsom) menu?",
     answer:
-      "Around a third of our menu is fasting: beyaynetu, shiro, misir, gomen, fasting firfir and more. It is a first-class menu, not an afterthought.",
+      "Yes — our heritage corner keeps a full fasting table: beyaynetu, shiro, misir, gomen, fasting firfir, plus the vegan pizza and veggie wrap. It is a first-class menu, not an afterthought.",
   },
   {
     id: "events",
-    question: "Do you host weddings and corporate events?",
+    question: "Do you host birthdays and corporate events?",
     answer:
-      "Our garden seats 300 under the lights and our VIP mesobs host private tastings. See the Events page — our team replies within one business day.",
+      "Our garden seats 300 under the lights and our VIP booths host private tastings. See the Events page — our team replies within one business day.",
   },
   {
     id: "delivery",
@@ -42,7 +42,7 @@ const FALLBACK_FAQS: FaqDTO[] = [
     id: "family",
     question: "Is the restaurant family friendly?",
     answer:
-      "Very. Gursha is a family tradition and children are welcome; high chairs and a gentler-spice kids' mesob are always available.",
+      "Very. Children are welcome; high chairs, chicken tenders and a gentler-spice kids' menu are always available.",
   },
 ];
 

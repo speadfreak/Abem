@@ -43,7 +43,7 @@ export default async function ContactPage() {
         eyebrow="Contact · አግኙን"
         title="Come find the fire."
         titleAm="ይምጡ፣ እሳቱ ይጠብቃል።"
-        description="Two houses in Addis Ababa, one front desk. Call, WhatsApp, or just follow the smell of fresh injera down Bole Road."
+        description="Two houses in Addis Ababa, one front desk. Call, WhatsApp, or just follow the smoke of the flame grill down Bole Road."
         compact
         hours={s.hours}
         holidays={s.holidays}

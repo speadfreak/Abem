@@ -19,10 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Our Story — Fifteen Years of Fire",
     description:
       seo?.description ||
-      "From a four-table injera bet on a Bole side street to Addis Ababa's flagship Ethiopian dining house — the Abem story, told in fire and slow sauce.",
+      "From a four-table family kitchen on a Bole side street to Addis Ababa's luxe flame kitchen — the Abem story, told in fire, craft and heritage.",
     openGraph: {
       title: "Our Story — Fifteen Years of Fire | Abem Restaurant",
-      description: "Fifteen years of slow fire, real spices and gursha hospitality in Addis Ababa.",
+      description: "Fifteen years of real fire, honest craft and gursha hospitality in Addis Ababa.",
       images: [{ url: seo?.ogImage || "/images/interior.jpg", width: 1440, height: 720, alt: "Inside the Abem dining hall" }],
     },
   };
@@ -48,9 +48,9 @@ export default async function AboutPage() {
     <main>
       <PageHero
         eyebrow="Our Story · ታሪካችን"
-        title="From four tables to the heart of Addis."
-        titleAm="ከአራት ሰሌዳዎች እስከ አዲስ አበባ ልብ"
-        description="Fifteen years ago, Abem opened on a quiet Bole side street — four tables, one clay mitad and a doro wot that took six hours. It still does."
+        title="From four tables to the flame."
+        titleAm="ከአራት ሰሌዳዎች እስከ እሳቱ"
+        description="Fifteen years ago, Abem opened on a quiet Bole side street — four tables, one fire and food done properly. Today that fire grills burgers, fires pizza and still bakes injera."
         image="/images/interior.jpg"
       />
 
@@ -73,7 +73,7 @@ export default async function AboutPage() {
           eyebrow="Chef & Team · ሼፍና ቡድን"
           title="The hands behind the fire."
           titleAm="እሳቱን የሚያስተናግዱ እጆች"
-          description="A kitchen run like a family compound: one executive chef who guards the recipes, a grill whisperer, a buna host with infinite patience, and a floor that runs on gursha."
+          description="A kitchen run like a family compound: one executive chef who guards the recipes, a grill whisperer, a shawarma carver with infinite patience, and a floor that runs on gursha."
         />
         <TeamGrid members={team} />
       </section>
@@ -84,7 +84,7 @@ export default async function AboutPage() {
             eyebrow="Heritage · ቅርስ"
             title="Kept alive, one ritual at a time."
             titleAm="በባህል የተጠበቀ ቅርስ"
-            description="Ethiopian dining is a chain of rituals — bread, coffee, spice. At Abem, each one is performed the old way, in front of you."
+            description="Fast service never means fast craft. At Abem, bread, coffee and spice still happen the old way, in front of you — alongside the flame grill and the wood oven."
           />
           <HeritagePanels />
         </div>

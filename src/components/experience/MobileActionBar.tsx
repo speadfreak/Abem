@@ -19,7 +19,7 @@ export default function MobileActionBar() {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[78] border-t border-gold/15 bg-[#0b0705]/92 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden" role="navigation" aria-label="Quick actions">
+    <div className="abem-floating fixed inset-x-0 bottom-0 z-[78] border-t border-gold/15 bg-[#0b0705]/92 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden" role="navigation" aria-label="Quick actions">
       <div className="grid grid-cols-4">
         <a href={telLink(settings.contact.phone)} className="flex h-14 min-h-[44px] flex-col items-center justify-center gap-0.5 text-cream/85 active:bg-gold/10" aria-label={t("common.callUs")}>
           <Phone className="h-4.5 w-4.5 h-[18px] w-[18px] text-gold" />

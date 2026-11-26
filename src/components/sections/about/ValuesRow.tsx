@@ -14,21 +14,21 @@ type Value = {
 const VALUES: Value[] = [
   {
     icon: Flame,
-    name: "Slow fire",
-    am: "ቀስ ብሎ እሳት",
-    copy: "Doro wot for six hours. Kitfo hand-chopped to order. Nothing leaves this kitchen in a hurry — because nothing worth eating ever is.",
+    name: "Real fire",
+    am: "እውነተኛ እሳት",
+    copy: "Patties over live charcoal, pizza from a wood oven, shawarma off the spit. Real fire is slower than a fryer — and worth every second.",
   },
   {
     icon: Sparkles,
-    name: "Real spices",
-    am: "እውነተኛ ቅመም",
-    copy: "Sixteen spices, toasted and ground in-house every Monday. No paste from a bag, no shortcuts — the market women of Merkato know us by name.",
+    name: "Real ingredients",
+    am: "እውነተኛ ንጥረ ነገር",
+    copy: "Beef ground every morning, dough cold-fermented for two days, berbere toasted in-house weekly. No paste from a bag, no shortcuts — the market women of Merkato know us by name.",
   },
   {
     icon: HandHeart,
     name: "Gursha hospitality",
     am: "የጉርሻ እንግዳ ተቀባይነት",
-    copy: "To feed someone by hand is to say: you are family. Every guest gets the welcome of a highland home — and, in time, the third cup of buna.",
+    copy: "To feed someone is to say: you are family. Every guest gets the welcome of a highland home — whether it's a flame burger or the buna ceremony.",
   },
 ];
 

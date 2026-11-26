@@ -26,7 +26,7 @@ export default function AppProviders({ children, settings }: { children: React.R
     <SettingsProvider initial={settings}>
       <LanguageProvider>
         <Preloader />
-        <SmoothScroll />
+        {!isOps && <SmoothScroll />}
         <Cursor />
         <ScrollProgress />
         <BackToTop />

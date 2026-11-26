@@ -26,23 +26,23 @@ const FALLBACK_PACKAGES: EventPackageDTO[] = [
     title: "The Garden Wedding",
     titleAm: null,
     description:
-      "A candlelit garden feast for up to 300 guests: grand mesobs, live azmari band, tej bar and a private buna pavilion. Our events team choreographs every gursha.",
+      "A candlelit garden feast for up to 300 guests: flame-grill and pizza stations, live azmari band, tej bar and a private buna pavilion. Our events team choreographs every plate.",
     capacity: "Up to 300 guests",
     priceFrom: 95000,
     image: "/images/events.jpg",
-    features: ["Full garden takeover", "Live azmari + krar band", "Custom mesob centerpieces", "Dedicated host team", "Photography corners"],
+    features: ["Full garden takeover", "Live azmari + krar band", "Flame-grill & pizza stations", "Dedicated host team", "Photography corners"],
   },
   {
     id: "f-corporate-mesob",
     slug: "corporate-mesob",
-    title: "Corporate Mesob",
+    title: "Corporate Flame Night",
     titleAm: null,
     description:
       "Boardroom dinners, launch nights and team feasts. Screen, projector, halal and fasting menus, and an invoice your finance team will love.",
     capacity: "Up to 80 guests",
     priceFrom: 35000,
     image: "/images/interior.jpg",
-    features: ["Private hall + AV", "Set mesob menus from ETB 950", "Fasting & international options", "Company branding on menus", "Receipt & invoice ready"],
+    features: ["Private hall + AV", "Set flame menus from ETB 950", "Fasting & international options", "Company branding on menus", "Receipt & invoice ready"],
   },
   {
     id: "f-birthday-habesha",

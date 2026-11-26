@@ -158,7 +158,7 @@ export default function OrderHub() {
 
   return (
     <>
-      <section className="container-x pb-28 pt-2" aria-label="Order online">
+      <section className="container-x pb-44 pt-2 md:pb-28" aria-label="Order online">
         {/* Mode tabs */}
         <div className="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label="Order mode">
           {MODES.filter((m) => !lockedDinein || m.id === "DINEIN").map((m) => {
@@ -241,19 +241,20 @@ export default function OrderHub() {
           )}
         </div>
 
-        {/* Fasting note */}
+        {/* Kitchen note */}
         <p className="mx-auto mt-10 flex max-w-xl items-center justify-center gap-2 text-center text-xs text-muted-foreground">
           <WheatOff className="h-3.5 w-3.5 shrink-0 text-[#8fd0a0]" aria-hidden="true" />
-          Fasting (Tsom) dishes are cooked on separate clay mitad surfaces — fully vegan, fully delicious.
+          Fasting (Tsom) heritage dishes are still cooked on separate clay mitad surfaces — fully vegan, fully delicious.
         </p>
       </section>
 
-      {/* Floating cart bar */}
+      {/* Floating cart bar — lifted above the mobile action cluster, native padding on desktop */}
       {cart.count > 0 ? (
         <motion.div
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="fixed inset-x-0 bottom-4 z-40 flex justify-center px-4"
+          className="abem-floating fixed inset-x-0 bottom-[4.75rem] z-[60] flex justify-center px-4 md:bottom-4"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
           <button
             onClick={() => setCartOpen(true)}

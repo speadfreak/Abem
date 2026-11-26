@@ -23,7 +23,7 @@ export default async function MenuPage() {
     "@context": "https://schema.org",
     "@type": "Menu",
     name: "Abem Restaurant Menu",
-    hasMenuSection: ["Fasting & Vegan", "Wat & Alicha", "Grill & Tibs", "Kitfo", "Drinks"].map((name) => ({
+    hasMenuSection: ["Burgers", "Wood-Fired Pizza", "Shawarma & Wraps", "Fried & Grilled Chicken", "Sandwiches", "Sides & Bites", "Ethiopian Heritage", "Drinks", "Desserts"].map((name) => ({
       "@type": "MenuSection",
       name,
     })),
@@ -34,10 +34,10 @@ export default async function MenuPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHero
         eyebrow="The Menu · ምናሌ"
-        title="Fire, slow-cooked."
+        title="Fire-kissed, hand-built."
         titleAm="ምናሌው"
-        description="Every dish on one injera. Prices in Ethiopian Birr. Fasting (Tsom) dishes are a first-class menu, not an afterthought."
-        image="/images/dishes/doro-wat.jpg"
+        description="Flame-grilled burgers, wood-fired pizza, shawarma carved to order and crispy golden chicken — with our Ethiopian heritage woven through. Prices in Ethiopian Birr."
+        image="/images/dishes/burger.jpg"
         hours={settings.hours}
         holidays={settings.holidays}
       />

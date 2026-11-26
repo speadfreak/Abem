@@ -9,8 +9,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Order Online — Delivery, Takeaway & Table QR | Abem Flow",
     description:
-      "Order Abem's doro wat, kitfo and tibs online. Delivery across Addis Ababa, takeaway pickup and scan-to-order table service — powered by Abem Flow.",
-    openGraph: { images: [{ url: "/images/dishes/tibs.jpg" }] },
+      "Order Abem's flame-grilled burgers, wood-fired pizza, shawarma and crispy chicken online. Delivery across Addis Ababa, takeaway pickup and scan-to-order table service — powered by Abem Flow.",
+    openGraph: { images: [{ url: "/images/dishes/burger.jpg" }] },
   };
 }
 
@@ -21,8 +21,8 @@ export default function OrderPage() {
         eyebrow="Abem Flow · ትዕዛዝ"
         title="Order the fire."
         titleAm="ትዕዛዝዎን ያድርጉ"
-        description="Delivery across Addis, pickup at the host desk, or scan-to-order from your mesob. Same kitchen, same fire — now one tap away."
-        image="/images/dishes/tibs.jpg"
+        description="Delivery across Addis, pickup at the host desk, or scan-to-order from your table. Same flame, same kitchen — now one tap away."
+        image="/images/dishes/burger.jpg"
         compact
       />
       <Suspense

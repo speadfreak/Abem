@@ -26,7 +26,7 @@ export default async function HomePage() {
     "@type": "Restaurant",
     name: settings.site.name,
     image: settings.hero.posterUrl,
-    servesCuisine: ["Ethiopian", "Horn of Africa"],
+    servesCuisine: ["Burgers", "Pizza", "Shawarma", "Fried Chicken", "Fast Food", "Ethiopian"],
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",

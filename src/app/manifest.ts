@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Abem Restaurant — Ethiopian Fire & Heritage",
+    name: "Abem Restaurant — Luxurious Flavor, Fired Daily",
     short_name: "Abem",
-    description: "Abem is Addis Ababa's flagship Ethiopian dining house. Reserve, order and track — all in one place.",
+    description: "Abem is Addis Ababa's luxe flame kitchen — flame-grilled burgers, wood-fired pizza, shawarma and crispy chicken, with Ethiopian heritage woven through. Reserve, order and track — all in one place.",
     start_url: "/",
     display: "standalone",
     background_color: "#0b0705",

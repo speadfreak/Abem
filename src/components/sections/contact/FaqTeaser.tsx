@@ -18,13 +18,13 @@ const FALLBACK_FAQS: FaqDTO[] = [
     id: "f-spice",
     question: "How spicy is Abem food, really?",
     answer:
-      "Every dish shows a berbere heat level (0–3). Kitfo and tibs firfir run hot; alicha dishes are mild. Our kitchen will happily adjust — just note it when ordering.",
+      "Every dish shows a heat level (0–3). The Berbere Smash Burger and Fasting Firfir run hot; burgers, pizza and fried chicken are mild to medium. Our kitchen will happily adjust — just note it when ordering.",
   },
   {
     id: "f-events",
     question: "Do you host weddings and corporate events?",
     answer:
-      "Our garden seats 300 under the lights and our VIP mesobs host private tastings. See the Events page — our team replies within one business day.",
+      "Our garden seats 300 under the lights and our VIP booths host private tastings. See the Events page — our team replies within one business day.",
   },
 ];
 

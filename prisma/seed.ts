@@ -33,6 +33,12 @@ async function main() {
   console.log("Seeding Abem Restaurant ...");
 
   /* ── Admin users ── */
+  const adminPw = await bcrypt.hash(process.env.SEED_ADMIN_PASSWORD || "admin_password", 11);
+  await db.adminUser.upsert({
+    where: { email: "admin@gmail.com" },
+    update: { passwordHash: adminPw, role: "OWNER", name: "Abem Admin", active: true },
+    create: { email: "admin@gmail.com", passwordHash: adminPw, name: "Abem Admin", role: "OWNER" },
+  });
   const ownerPw = await bcrypt.hash(process.env.SEED_OWNER_PASSWORD || "Abem@2024!", 11);
   await db.adminUser.upsert({
     where: { email: "owner@abemrestaurant.et" },
@@ -50,8 +56,8 @@ async function main() {
   await upsertSetting("site", {
     name: "Abem Restaurant",
     shortName: "Abem",
-    tagline: "Where fire meets heritage — Ethiopia on one table.",
-    taglineAm: "እሳትና ባህል ሲገናኙ፣ ኢትዮጵያ በአንድ ሰሌዳ ላይ።",
+    tagline: "Luxurious flavor, fired daily — Addis Ababa's flame kitchen.",
+    taglineAm: "በእሳት የሚቀጣይ ጥሩ ጣዕም — የአዲስ አበባ የእሳት ኩሽን።",
     logoUrl: "/brand/logo.png",
     founded: "2011",
     city: "Addis Ababa",
@@ -64,60 +70,91 @@ async function main() {
     referralPoints: 150,
     tiers: [
       { name: "Bronze", min: 0, perk: "5% off your birthday week" },
-      { name: "Silver", min: 500, perk: "Free buna ceremony with every visit" },
-      { name: "Gold", min: 1500, perk: "Priority reservations + tibs upgrade" },
+      { name: "Silver", min: 500, perk: "Free macchiato with every visit" },
+      { name: "Gold", min: 1500, perk: "Priority reservations + free fries upgrade" },
       { name: "Ember", min: 4000, perk: "Chef's table tasting, twice a year" },
     ],
   });
 
-  /* ── Menu ── */
+  /* ── Menu — luxe flame kitchen: burgers, pizza, shawarma, chicken + heritage corner ── */
   const catDefs = [
-    { slug: "breakfast", name: "Breakfast & Fasting Mornings", nameAm: "የጠዋት ምግብ", description: "Chechebsa, fuul and fasting classics from 10 AM.", station: "grill", image: "/images/dishes/chechebsa.jpg" },
-    { slug: "fasting-vegan", name: "Fasting & Vegan (Tsom)", nameAm: "ጾም ምግቦች", description: "The vegan soul of the Ethiopian table — no animal products, full flavor.", station: "wat", image: "/images/dishes/beyaynetu.jpg" },
-    { slug: "wat-alicha", name: "Wat & Alicha", nameAm: "ወጥና አልጫ", description: "Slow-simmered stews — the heart of every mesob.", station: "wat", image: "/images/dishes/doro-wat.jpg" },
-    { slug: "grill-tibs", name: "Grill & Tibs", nameAm: "ጥብስና ግሪል", description: "From the charcoal grill, served still sizzling in shekla.", station: "grill", image: "/images/dishes/tibs.jpg" },
-    { slug: "kitfo-raw", name: "Kitfo & Raw", nameAm: "ክትፎ", description: "Hand-minced prime beef, mitmita heat, kibbeh richness.", station: "cold", image: "/images/dishes/kitfo.jpg" },
-    { slug: "platters", name: "Signature Platters", nameAm: "ልዩ ሰሌዳዎች", description: "Abem's family mesobs — built for gursha and conversation.", station: "grill", image: "/images/hero-poster.jpg" },
-    { slug: "sides-breads", name: "Sides & Breads", nameAm: "ጎን ምግቦች", description: "Injera baked daily on teff from Gojjam, and everything beside it.", station: "grill", image: "/images/dishes/gomen.jpg" },
-    { slug: "drinks", name: "Buna, Tej & Drinks", nameAm: "ቡና፣ ጠጅና መጠጦች", description: "The ceremony, the honey wine, and cold spris after.", station: "drinks", image: "/images/tej.jpg" },
-    { slug: "desserts", name: "Desserts", nameAm: "ምግብ በኋላ", description: "A gentle, modern finish to a long lunch.", station: "dessert", image: "/images/spices.jpg" },
+    { slug: "burgers", name: "Flame-Grilled Burgers", nameAm: "በርገር", description: "Ground fresh every morning, seared over real flame, stacked tall on toasted brioche.", station: "grill", image: "/images/dishes/burger.jpg" },
+    { slug: "pizza", name: "Wood-Fired Pizza", nameAm: "ፒዛ", description: "Two-day cold-fermented dough, leopard-spotted crust from the wood oven.", station: "oven", image: "/images/dishes/pizza.jpg" },
+    { slug: "shawarma-wraps", name: "Shawarma & Wraps", nameAm: "ሻዋርማና ሪፖ", description: "Marinated overnight, carved off the spit to order, wrapped hot.", station: "grill", image: "/images/dishes/shawarma.jpg" },
+    { slug: "chicken", name: "Fried & Grilled Chicken", nameAm: "ዶሮ ስጋ", description: "Buttermilk-brined, double-dredged and fried to a golden shatter.", station: "fry", image: "/images/dishes/fried-chicken.jpg" },
+    { slug: "sandwiches", name: "Sandwiches & Melts", nameAm: "ሳንድዊች", description: "Toasted, stacked and pressed — from the club classic to our injera fusion roll.", station: "grill", image: "/images/dishes/club-sandwich.jpg" },
+    { slug: "sides", name: "Sides & Bites", nameAm: "ጎን ምግቦች", description: "Golden fries, loaded baskets and everything that makes the meal.", station: "fry", image: "/images/dishes/loaded-fries.jpg" },
+    { slug: "heritage", name: "Ethiopian Heritage Corner", nameAm: "የባህል ምግቦች", description: "Where the fire started — chechebsa mornings, firfir, fasting classics and buna. Never leaving the menu.", station: "wat", image: "/images/dishes/chechebsa.jpg" },
+    { slug: "drinks", name: "Shakes, Buna & Drinks", nameAm: "መጠጦች", description: "Thick shakes, the buna ceremony, tej and cold spris after.", station: "drinks", image: "/images/dishes/milkshake.jpg" },
+    { slug: "desserts", name: "Desserts", nameAm: "ምግብ በኋላ", description: "A gentle, decadent finish to a fast lunch.", station: "dessert", image: "/images/spices.jpg" },
   ];
+
+  /* Categories retired by the repositioning — hidden from the public menu. */
+  const retiredSlugs = ["breakfast", "fasting-vegan", "wat-alicha", "grill-tibs", "kitfo-raw", "platters", "sides-breads"];
 
   const items: Array<{
     cat: string; name: string; nameAm: string; price: number; desc: string; descAm: string;
     img?: string; tags?: string[]; spicy?: number; fasting?: boolean; vegan?: boolean; pick?: boolean; featured?: boolean;
   }> = [
-    { cat: "breakfast", name: "Chechebsa with Honey & Ayib", nameAm: "ጨጨብሳ", price: 260, desc: "Torn flatbread pan-tossed in berbere kibbeh, served with creamed honey and fresh ayib.", descAm: "በበርበሬ ቅቤ የተቀመጠ ጨጨብሳ ከማርና አይብ ጋር።", img: "/images/dishes/chechebsa.jpg", pick: true, featured: true },
-    { cat: "breakfast", name: "Fuul with Fried Egg", nameAm: "ፉል", price: 220, desc: "Slow fava beans, tomato, green chili, cumin and a fried egg on top.", descAm: "ባቄላ ከቲማቲም፣ ከጤና ማርያም እና ከካሜን ጋር።" },
-    { cat: "fasting-vegan", name: "Beyaynetu (Fasting Platter)", nameAm: "በያይነቱ", price: 450, desc: "The full vegan rainbow: misir, shiro, gomen, atkilt, timatim salata on injera.", descAm: "የጾም ምግብ ሰሌዳ፣ ምስር፣ ሽሮ፣ ጎመን፣ አትክልት በኢንጀራ።", img: "/images/dishes/beyaynetu.jpg", vegan: true, fasting: true, pick: true, featured: true },
-    { cat: "fasting-vegan", name: "Shiro Fitfit", nameAm: "ሽሮ ፍርፍር", price: 320, desc: "Silky chickpea shiro folded through torn injera, finished with spiced oil.", descAm: "ሽሮ በተቀነሰ ኢንጀራ።", img: "/images/dishes/shiro.jpg", vegan: true, fasting: true, spicy: 1 },
-    { cat: "fasting-vegan", name: "Gomen & Atkilt Sides", nameAm: "ጎመንና አትክልት", price: 210, desc: "Collard greens braised with garlic; cabbage and carrot simmered with turmeric.", descAm: "ጎመን ከነፍጠር እና ከዝንጅብል፣ አትክልት ከኢርብ ጋር።", img: "/images/dishes/gomen.jpg", vegan: true, fasting: true },
-    { cat: "fasting-vegan", name: "Fasting Firfir", nameAm: "የጾም ፍርፍር", price: 300, desc: "Injera tossed in berbere-tomato sauce with roasted vegetables.", descAm: "ኢንጀራ በበርበሬ ሶስ ከአትክልት ጋር።", img: "/images/dishes/firfir.jpg", vegan: true, fasting: true, spicy: 2 },
-    { cat: "fasting-vegan", name: "Misir Wot", nameAm: "ምስር ወጥ", price: 240, desc: "Red split lentils simmered deep in berbere and garlic.", descAm: "የምስር ወጥ በበርበሬ።", vegan: true, fasting: true, spicy: 2 },
-    { cat: "wat-alicha", name: "Doro Wot", nameAm: "ዶሮ ወጥ", price: 680, desc: "Abem's crown: chicken slowly simmered 6 hours in berbere, crowned with a marinated egg. Sunday's smell, any day.", descAm: "ስድስት ሰዓት በበርበሬ የተበሰለ ዶሮ ወጥ ከእንቁላል ጋር።", img: "/images/dishes/doro-wat.jpg", spicy: 2, pick: true, featured: true },
-    { cat: "wat-alicha", name: "Siga Wot (Beef)", nameAm: "ስጋ ወጥ", price: 590, desc: "Beef chunks folded into the same deep berbere base, richer and darker.", descAm: "የስጋ ወጥ በበርበሬ።", spicy: 2 },
-    { cat: "wat-alicha", name: "Begie Alicha", nameAm: "በግ አልጫ", price: 560, desc: "Mild and golden — lamb with turmeric, ginger and green beans.", descAm: "በኢርብ የተዘጋጀ የበግ ስጋ።" },
-    { cat: "wat-alicha", name: "Bozena Shiro", nameAm: "ቦዜና ሽሮ", price: 380, desc: "Shiro enriched with tender beef cubes — the best of both tables.", descAm: "ሽሮ ከስጋ ጋር።", spicy: 1 },
-    { cat: "grill-tibs", name: "Shekla Lamb Tibs", nameAm: "የበግ ጥብስ", price: 720, desc: "Charcoal-grilled lamb, rosemary, jalapeno and onion, served screaming in a clay shekla.", descAm: "የበግ ጥብስ በሸክላ ከሮዝማሪ ጋር።", img: "/images/dishes/tibs.jpg", pick: true, featured: true, spicy: 1 },
-    { cat: "grill-tibs", name: "Special Tibs Firfir", nameAm: "ልዩ ጥብስ ፍርፍር", price: 640, desc: "Grilled beef tossed with injera and berbere — the hangover king of Addis.", descAm: "ጥብስ ከኢንጀራ በበርበሬ።", spicy: 3 },
-    { cat: "grill-tibs", name: "Derq Tibs (Dry)", nameAm: "ድርቅ ጥብስ", price: 580, desc: "Dry-fried beef cubes, crisp edges, awaze on the side.", descAm: "ድርቅ ጥብስ ከአዋዜ ጋር።" },
-    { cat: "grill-tibs", name: "Chicken Zilzil Tibs", nameAm: "የዶሮ ጥብስ", price: 520, desc: "Stripped chicken seared hot with peppers and house berbere butter.", descAm: "የዶሮ ጥብስ በቅቤ እና በቃኚ።" },
-    { cat: "kitfo-raw", name: "Abem Special Kitfo", nameAm: "ልዩ ክትፎ", price: 890, desc: "Hand-minced prime beef warmed in mitmita kibbeh, ayib and gomen beside. Our most photographed plate.", descAm: "በሚጥሚጣ ቅቤ የተቀመጠ ክትፎ ከአይብ ጋር።", img: "/images/dishes/kitfo.jpg", pick: true, featured: true, spicy: 2 },
-    { cat: "kitfo-raw", name: "Kitfo Leb Leb", nameAm: "ክትፎ ለብ ለብ", price: 820, desc: "Half-warmed kitfo — the gentle middle road.", descAm: "አግማሚ የተሞቀ ክትፎ።", spicy: 1 },
-    { cat: "kitfo-raw", name: "Gored Gored", nameAm: "ጎረድ ጎረድ", price: 780, desc: "Cubed raw beef tossed in kibbeh and awaze — no heat, no apology.", descAm: "ጎረድ ጎረድ በቅቤ።", spicy: 2 },
-    { cat: "platters", name: "Abem Royal Mesob (for 4)", nameAm: "የአበም ሜሶብ (ለ4)", price: 2400, desc: "Doro wot, lamb tibs, special kitfo, begie alicha, misir, gomen, salad — the whole house on one injera. Built for gursha.", descAm: "ሁሉንም የቤታችን ምግብ በአንድ ኢንጀራ ላይ የሚያካትት ሰሌዳ።", img: "/images/hero-poster.jpg", featured: true, pick: true },
-    { cat: "platters", name: "Habesha Night Platter (for 2)", nameAm: "የሐበሻ ምሽት (ለ2)", price: 1350, desc: "Tibs, doro wot, kitfo leb leb and the fasting garden — for sharing and slowing down.", descAm: "ጥብስ፣ ዶሮ ወጥ፣ ክትፎና የጾም ምግብ ለሁለት።", featured: true },
-    { cat: "platters", name: "Mixed Grill Mesob", nameAm: "የድብልቅ ግሪል ሜሶብ", price: 1180, desc: "Lamb, chicken and beef from the charcoal grill with all sides.", descAm: "የተለያዩ የግሪል ስጋቶች በኢንጀራ።" },
-    { cat: "sides-breads", name: "Fresh Teff Injera", nameAm: "የጤፍ ኢንጀራ", price: 60, desc: "Baked every morning on teff from Gojjam. The plate, the fork, the ritual.", descAm: "በጤፍ የተሰራ ኢንጀራ በየጠዋቱ።" },
-    { cat: "sides-breads", name: "Ayib & Berbere Plate", nameAm: "አይብና በርበሬ", price: 140, desc: "Fresh cottage cheese with crushed berbere and oil.", descAm: "አይብ ከበርበሬ ጋር።", vegan: true },
-    { cat: "sides-breads", name: "Timatim Salata", nameAm: "ቲማቲም ሰላጣ", price: 160, desc: "Tomato, onion, jalapeno, olive oil — cool and bright.", descAm: "ቲማቲም ሰላጣ።", vegan: true, fasting: true },
+    /* Burgers */
+    { cat: "burgers", name: "The Abem Flame Burger", nameAm: "የአበም ፍሌም በርገር", price: 550, desc: "Double flame-grilled beef patties, aged cheddar, ember mayo, pickles and charred onion on toasted brioche. Our signature.", descAm: "በእሳት የተጠበሰ ድርብ የበሬ ስጋ ከቺዳር አይብ ጋር።", img: "/images/dishes/burger.jpg", pick: true, featured: true, spicy: 1 },
+    { cat: "burgers", name: "Crispy Chicken Burger", nameAm: "የዶሮ በርገር", price: 480, desc: "Buttermilk-brined chicken fillet, double-dredged and fried shatter-crisp, spicy honey mayo, pickles.", descAm: "ገርጅ ያለ የዶሮ ስጋ በርገር ከቃኚ ማዮ ጋር።", img: "/images/dishes/chicken-burger.jpg", featured: true, spicy: 1 },
+    { cat: "burgers", name: "Smoky BBQ Bacon Burger", nameAm: "የቤን በርገር", price: 590, desc: "Flame-grilled beef, crispy beef bacon, smoked BBQ glaze, melted cheddar and onion rings inside the stack.", descAm: "በባርቤኪው ሶስ የተቀመጠ የበሬ ስጋ በርገር።", spicy: 0 },
+    { cat: "burgers", name: "Mushroom Swiss Burger", nameAm: "የእርጎጡ እርጎጡ", price: 520, desc: "Grilled beef, garlicky roasted mushrooms, melted Swiss cheese and truffle mayo on brioche.", descAm: "ከእንጉዳይ እና ከስዊስ አይብ ጋር የተሠራ በርገር።" },
+    { cat: "burgers", name: "Berbere Smash Burger", nameAm: "የበርበሬ በርገር", price: 540, desc: "Where heritage meets the grill: double smash patties glazed in berbere honey butter, ayib slaw, hot on a potato bun.", descAm: "የባህልና የግሪል ግጠፍ — በበርበሬ ቅቤ የተቀመጠ በርገር።", pick: true, spicy: 2 },
+
+    /* Pizza */
+    { cat: "pizza", name: "Ember Pepperoni", nameAm: "የፔፐሮኒ ፒዛ", price: 650, desc: "Cup-and-char pepperoni, molten mozzarella, hot honey drizzle and basil over two-day dough.", descAm: "በእሳት የተሠራ ፔፐሮኒ ፒዛ ከሞቃላ አይብ ጋር።", img: "/images/dishes/pizza.jpg", pick: true, featured: true },
+    { cat: "pizza", name: "Margherita Classica", nameAm: "ማርጋሪታ", price: 550, desc: "San Marzano tomato, fior di latte, torn basil and a whisper of olive oil. Simple, perfect.", descAm: "በቲማቲም፣ በአይብ እና በባሲል የተሠራ ክላሲክ ፒዛ።", featured: true },
+    { cat: "pizza", name: "Berbere Chicken Pizza", nameAm: "የበርበሬ ዶሮ ፒዛ", price: 720, desc: "Flame-grilled chicken tossed in berbere honey glaze, red onion, green chili and mozzarella — Addis meets Naples.", descAm: "በበርበሬ የተጠበሰ የዶሮ ስጋ ከአይብ ጋር።", pick: true, spicy: 2 },
+    { cat: "pizza", name: "Four Cheese Ember", nameAm: "የአራት አይብ ፒዛ", price: 690, desc: "Mozzarella, cheddar, gouda and blue cheese with a honey finish and cracked pepper.", descAm: "የአራት ዓይነት አይብ ፒዛ።" },
+    { cat: "pizza", name: "Garden Veggie Pizza", nameAm: "የአትክልት ፒዛ", price: 580, desc: "Roasted peppers, mushrooms, olives, red onion and cherry tomatoes — vegan cheese on request.", descAm: "በአትክልት የተሠራ ፒዛ።", vegan: true, fasting: true },
+
+    /* Shawarma & Wraps */
+    { cat: "shawarma-wraps", name: "Abem Chicken Shawarma", nameAm: "የዶሮ ሻዋርማ", price: 420, desc: "Overnight-marinated chicken carved off the spit, garlic toum, pickles and fries wrapped in grilled flatbread.", descAm: "ከላም ላይ የተከረደ የዶሮ ሻዋርማ ከነፍጠር።", img: "/images/dishes/shawarma.jpg", pick: true, featured: true },
+    { cat: "shawarma-wraps", name: "Beef Shawarma Plate", nameAm: "የበሬ ሻዋርማ ሰሌዳ", price: 560, desc: "Spiced beef shawarma over fries and garlic sauce, served open with pickles and warm bread — no wrap needed.", descAm: "የበሬ ሻዋርማ በፍሬንዝ ፋይትስ።", spicy: 1 },
+    { cat: "shawarma-wraps", name: "Ember Lamb Wrap", nameAm: "የበግ ሪፖ", price: 540, desc: "Charcoal-grilled lamb, tahini-yogurt, charred peppers and sumac onion in a warm roll.", descAm: "የበግ ስጋ በታሂኒ ሶስ።", spicy: 1 },
+    { cat: "shawarma-wraps", name: "Fasting Veggie Wrap", nameAm: "የጾም ሪፖ", price: 350, desc: "Spiced chickpea and roasted-vegetable wrap with tahini, greens and pickles — fully vegan.", descAm: "በአትክልት የተሠራ ሪፖ።", vegan: true, fasting: true },
+
+    /* Chicken */
+    { cat: "chicken", name: "Crispy Fried Chicken (3 pc)", nameAm: "ገርጅ ዶሮ (3)", price: 490, desc: "Buttermilk-brined, double-dredged, fried golden with honey-mustard and house dips.", descAm: "በብትርሚልክ የተቀመጠ ገርጅ የዶሮ ስጋ።", img: "/images/dishes/fried-chicken.jpg", pick: true, featured: true },
+    { cat: "chicken", name: "Ember Buffalo Wings (6 pc)", nameAm: "ቡፋሎ ኪንግስ (6)", price: 450, desc: "Double-fried wings glazed in smoky ember buffalo sauce, blue-cheese or ranch dip.", descAm: "በቡፋሎ ሶስ የተቀመጡ ኪንግስ።", img: "/images/dishes/wings.jpg", featured: true, spicy: 2 },
+    { cat: "chicken", name: "Grilled Half Chicken", nameAm: "የግሪል ዶሮ", price: 620, desc: "Half chicken over charcoal, basted in berbere butter, with fries and salad.", descAm: "በእሳት የተጠበሰ የዶሮ ስጋ በቅቤ።", spicy: 1 },
+    { cat: "chicken", name: "Chicken Tenders & Fries", nameAm: "ቼክን ቴንደርስ", price: 420, desc: "Crispy buttermilk tenders, seasoned fries, honey mustard — the family favorite.", descAm: "ገርጅ የዶሮ ስጋ ከፍሬንዝ ፋይትስ ጋር።" },
+
+    /* Sandwiches */
+    { cat: "sandwiches", name: "The Club Sandwich", nameAm: "ክላብ ሳንድዊች", price: 450, desc: "Triple-decker toasted sourdough: grilled chicken, crispy beef bacon, fried egg, cheese and tomato with fries.", descAm: "በሶርዶ ዳቦ የተሠራ ክላብ ሳንድዊች።", img: "/images/dishes/club-sandwich.jpg", featured: true },
+    { cat: "sandwiches", name: "Firfir Injera Roll", nameAm: "የፍርፍር ሮል", price: 380, desc: "Heritage fusion: soft injera rolled around spiced firfir beef, berbere butter glaze, ayib dip. Old flavor, new shape.", descAm: "ፍርፍር በኢንጀራ ተጠቅሎ የቀረበ — የባህል ጣዕም በአዲስ ቅርጽ።", img: "/images/dishes/injera-sandwich.jpg", pick: true, spicy: 2 },
+    { cat: "sandwiches", name: "Grilled Cheese Melt", nameAm: "ግሪልድ ቺዝ", price: 320, desc: "Three cheeses pressed between butter-toasted sourdough until molten. Tomato soup dip on the side.", descAm: "በሶስት ዓይነት አይብ የተሠራ ሳንድዊች።", vegan: false, fasting: false },
+    { cat: "sandwiches", name: "Philly Cheesesteak", nameAm: "ፊሊ ቺዝስቴክ", price: 520, desc: "Thin-sliced seared beef, peppers, onions and molten cheese in a toasted roll.", descAm: "የበሬ ስጋ ከአይብ በተጠበሰ ዳቦ።", spicy: 1 },
+
+    /* Sides & Bites */
+    { cat: "sides", name: "Abem Loaded Fries", nameAm: "የተጭነ ፍሬንዝ ፋይትስ", price: 380, desc: "Golden fries smothered in cheese sauce, beef crumbles, jalapeño and spring onion — a meal disguised as a side.", descAm: "በአይብ ሶስ የተጭነ ፍሬንዝ ፋይትስ።", img: "/images/dishes/loaded-fries.jpg", featured: true, pick: true },
+    { cat: "sides", name: "Seasoned Fries", nameAm: "ፍሬንዝ ፋይትስ", price: 180, desc: "Twice-cooked, paprika-dusted, sea-salted. Crisp outside, cloud inside.", descAm: "በቃኚ የተቀመጡ ፍሬንዝ ፋይትስ።", img: "/images/dishes/fries.jpg", vegan: true },
+    { cat: "sides", name: "Onion Rings", nameAm: "የሽንኩርት ቀለበቶች", price: 220, desc: "Thick-cut rings in crackling batter with ember mayo dip.", descAm: "ገርጅ የሽንኩርት ቀለበቶች።", vegan: true },
+    { cat: "sides", name: "Garden Salad", nameAm: "የአትክልት ሰላጣ", price: 260, desc: "Crisp romaine, cherry tomato, cucumber ribbons, avocado and toasted seeds with lemon-olive dressing.", descAm: "በአትክልት የተሠራ ሰላጣ።", img: "/images/dishes/fresh-salad.jpg", vegan: true, fasting: true },
+    { cat: "sides", name: "Timatim Salata", nameAm: "ቲማቲም ሰላጣ", price: 160, desc: "The heritage side: tomato, onion, jalapeño and olive oil — cool and bright.", descAm: "ቲማቲም ሰላጣ።", vegan: true, fasting: true },
+
+    /* Heritage corner */
+    { cat: "heritage", name: "Chechebsa with Honey & Ayib", nameAm: "ጨጨብሳ", price: 260, desc: "Torn flatbread pan-tossed in berbere kibbeh, served with creamed honey and fresh ayib. Where mornings began.", descAm: "በበርበሬ ቅቤ የተቀመጠ ጨጨብሳ ከማርና አይብ ጋር።", img: "/images/dishes/chechebsa.jpg", pick: true, featured: true },
+    { cat: "heritage", name: "Fasting Firfir", nameAm: "የጾም ፍርፍር", price: 300, desc: "Injera tossed in berbere-tomato sauce with roasted vegetables — fully vegan heritage.", descAm: "ኢንጀራ በበርበሬ ሶስ ከአትክልት ጋር።", img: "/images/dishes/firfir.jpg", vegan: true, fasting: true, spicy: 2 },
+    { cat: "heritage", name: "Beyaynetu (Fasting Platter)", nameAm: "በያይነቱ", price: 450, desc: "The vegan rainbow: misir, shiro, gomen, atkilt and timatim salata on fresh teff injera.", descAm: "የጾም ምግብ ሰሌዳ፣ ምስር፣ ሽሮ፣ ጎመን፣ አትክልት በኢንጀራ።", img: "/images/dishes/beyaynetu.jpg", vegan: true, fasting: true, pick: true },
+    { cat: "heritage", name: "Shekla Lamb Tibs", nameAm: "የበግ ጥብስ", price: 720, desc: "Charcoal-grilled lamb, rosemary, jalapeño and onion, served still singing in a clay shekla.", descAm: "የበግ ጥብስ በሸክላ ከሮዝማሪ ጋር።", img: "/images/dishes/tibs.jpg", pick: true, spicy: 1 },
+    { cat: "heritage", name: "Abem Special Kitfo", nameAm: "ልዩ ክትፎ", price: 890, desc: "Hand-minced prime beef warmed in mitmita kibbeh, ayib and gomen beside. Our most photographed plate.", descAm: "በሚጥሚጣ ቅቤ የተቀመጠ ክትፎ ከአይብ ጋር።", img: "/images/dishes/kitfo.jpg", pick: true, spicy: 2 },
+    { cat: "heritage", name: "Fresh Teff Injera", nameAm: "የጤፍ ኢንጀራ", price: 60, desc: "Baked every morning on teff from Gojjam. The plate, the fork, the ritual.", descAm: "በጤፍ የተሠራ ኢንጀራ በየጠዋቱ።", vegan: true },
+
+    /* Drinks */
+    { cat: "drinks", name: "Vanilla-Caramel Buna Shake", nameAm: "ቫኒላ ሺክ", price: 260, desc: "Thick vanilla shake swirled with caramel and toasted buna beans. Dessert you can drink.", descAm: "ቫኒላ ከካራሜል ጋር የተቀናበረ ሺክ።", img: "/images/dishes/milkshake.jpg", featured: true, pick: true },
+    { cat: "drinks", name: "Chocolate Ember Shake", nameAm: "ቺኮላታ ሺክ", price: 260, desc: "Double chocolate, whipped cream and a whisper of chili warmth — the ember afterglow.", descAm: "ቺኮላታ ሺክ በትንሽ ቃኚ።", spicy: 1 },
     { cat: "drinks", name: "Abem Buna Ceremony (3 cups)", nameAm: "የቡና ሥርዓት", price: 250, desc: "Green beans roasted at your table, frankincense smoke, three sini pours. Thirty unhurried minutes.", descAm: "በግቢያ ላይ የሚቀረጥ ቡና ሥርዓት ከእጣን ጋር።", img: "/images/coffee-ceremony.jpg", featured: true, pick: true },
     { cat: "drinks", name: "House Tej", nameAm: "የቤት ጠጅ", price: 180, desc: "Honey wine fermented in-house, served in the berele. Gentle strength.", descAm: "በቤት ውስጥ የተሠራ ጠጅ።", img: "/images/tej.jpg" },
     { cat: "drinks", name: "Spris (Layered Juice)", nameAm: "ስፕሪስ", price: 190, desc: "Avocado, mango and papaya layered like an Ethiopian sunset.", descAm: "አቮካዶ፣ ማንጎ እና ፓፓያ የተቀናበረ።", vegan: true },
-    { cat: "drinks", name: "Spiced Shai", nameAm: "ሻይ", price: 90, desc: "Black tea with cinnamon, clove and cardamom.", descAm: "በከረሜላ የተፈላ ሻይ።", vegan: true },
     { cat: "drinks", name: "Ethiopian Macchiato", nameAm: "ማኪያቶ", price: 120, desc: "Double shot from Yirgacheffe beans, milk-first like Addis does it.", descAm: "ከይርጋጨፌ ቡና የተሠራ ማኪያቶ።" },
-    { cat: "desserts", name: "Honey Yogurt & Roasted Buna Crumble", nameAm: "እርብ ከማር ጋር", price: 240, desc: "Set yogurt, local honey, crushed roasted coffee beans.", descAm: "እርብ ከማር እና ከሮስት ቡና ጋር።" },
+    { cat: "drinks", name: "Soft Drinks & Sparkling Water", nameAm: "ሶፍት መጠጦች", price: 60, desc: "Coke, Fanta, Sprite, tonic and sparkling water — ice cold.", descAm: "ሶፍት መጠጦች።", vegan: true },
+
+    /* Desserts */
     { cat: "desserts", name: "Ember Chocolate Fondant", nameAm: "የቺኮላታ ፎንዳንት", price: 280, desc: "Dark fondant with a whisper of berbere warmth, vanilla cream.", descAm: "ቺኮላታ ፎንዳንት በበርበሬ ጮታ።", pick: true },
+    { cat: "desserts", name: "Honey Yogurt & Roasted Buna Crumble", nameAm: "እርብ ከማር ጋር", price: 240, desc: "Set yogurt, local honey, crushed roasted coffee beans.", descAm: "እርብ ከማር እና ከሮስት ቡና ጋር።" },
     { cat: "desserts", name: "Fresh Fruit Mesob", nameAm: "የፍሬ ሜሶብ", price: 200, desc: "Seasonal fruit carved and arranged on a mini mesob.", descAm: "የወቅቱ ፍሬዎች።", vegan: true, fasting: true },
   ];
 
@@ -128,8 +165,13 @@ async function main() {
       create: { ...c, order: i },
     });
   }
+  /* Retire categories that no longer belong to the luxe flame kitchen. */
+  for (const s of retiredSlugs) {
+    await db.menuCategory.updateMany({ where: { slug: s }, data: { active: false } });
+  }
   const cats = await db.menuCategory.findMany();
   const catMap = new Map(cats.map((c) => [c.slug, c.id]));
+  const activeCatIds = new Set(catDefs.map((c) => catMap.get(c.slug)!));
 
   for (const [i, it] of items.entries()) {
     const s = slug(it.name);
@@ -152,22 +194,32 @@ async function main() {
     });
   }
 
+  /* Items that no longer belong to any active category are marked unavailable ("86'd"). */
+  await db.menuItem.updateMany({
+    where: { categoryId: { notIn: [...activeCatIds] } },
+    data: { available: false },
+  });
+
   /* ── Gallery ── */
   const gallery = [
-    { title: "The grand mesob", category: "food", url: "/images/hero-poster.jpg", order: 0 },
-    { title: "Doro wot, six hours deep", category: "food", url: "/images/dishes/doro-wat.jpg", order: 1 },
-    { title: "Shekla lamb tibs", category: "food", url: "/images/dishes/tibs.jpg", order: 2 },
-    { title: "Special kitfo", category: "food", url: "/images/dishes/kitfo.jpg", order: 3 },
-    { title: "The fasting rainbow", category: "food", url: "/images/dishes/beyaynetu.jpg", order: 4 },
-    { title: "Shiro, swirled", category: "food", url: "/images/dishes/shiro.jpg", order: 5 },
-    { title: "Buna ceremony", category: "coffee", url: "/images/coffee-ceremony.jpg", order: 6 },
-    { title: "Tej in the berele", category: "coffee", url: "/images/tej.jpg", order: 7 },
-    { title: "The dining hall at night", category: "interior", url: "/images/interior.jpg", order: 8 },
-    { title: "Spice market mornings", category: "coffee", url: "/images/spices.jpg", order: 9 },
-    { title: "Azmari night", category: "events", url: "/images/music.jpg", order: 10 },
-    { title: "Garden weddings", category: "events", url: "/images/events.jpg", order: 11 },
-    { title: "Gursha", category: "food", url: "/images/gursha.jpg", order: 12 },
-    { title: "Chef Almaz", category: "team", url: "/images/chef.jpg", order: 13 },
+    { title: "The full flame spread", category: "food", url: "/images/hero-poster.jpg", order: 0 },
+    { title: "The Abem Flame Burger", category: "food", url: "/images/dishes/burger.jpg", order: 1 },
+    { title: "Wood-fired pepperoni", category: "food", url: "/images/dishes/pizza.jpg", order: 2 },
+    { title: "Shawarma, carved to order", category: "food", url: "/images/dishes/shawarma.jpg", order: 3 },
+    { title: "Crispy fried chicken", category: "food", url: "/images/dishes/fried-chicken.jpg", order: 4 },
+    { title: "Ember buffalo wings", category: "food", url: "/images/dishes/wings.jpg", order: 5 },
+    { title: "Loaded fries", category: "food", url: "/images/dishes/loaded-fries.jpg", order: 6 },
+    { title: "The club sandwich", category: "food", url: "/images/dishes/club-sandwich.jpg", order: 7 },
+    { title: "Vanilla-caramel buna shake", category: "food", url: "/images/dishes/milkshake.jpg", order: 8 },
+    { title: "The dining hall at night", category: "interior", url: "/images/interior.jpg", order: 9 },
+    { title: "Chechebsa mornings", category: "food", url: "/images/dishes/chechebsa.jpg", order: 10 },
+    { title: "Buna ceremony", category: "coffee", url: "/images/coffee-ceremony.jpg", order: 11 },
+    { title: "Tej in the berele", category: "coffee", url: "/images/tej.jpg", order: 12 },
+    { title: "The fasting rainbow", category: "food", url: "/images/dishes/beyaynetu.jpg", order: 13 },
+    { title: "Special kitfo", category: "food", url: "/images/dishes/kitfo.jpg", order: 14 },
+    { title: "Azmari night", category: "events", url: "/images/music.jpg", order: 15 },
+    { title: "Garden weddings", category: "events", url: "/images/events.jpg", order: 16 },
+    { title: "Chef Almaz", category: "team", url: "/images/chef.jpg", order: 17 },
   ];
   for (const g of gallery) {
     const exists = await db.galleryItem.findFirst({ where: { title: g.title } });
@@ -176,10 +228,10 @@ async function main() {
 
   /* ── Team ── */
   const team = [
-    { name: "Chef Almaz Bekele", role: "Executive Chef", bio: "Fifteen years at the berbere pot. Trained in her mother's kitchen in Gondar, sharpened in Addis. Guards the doro wot recipe like a national secret.", photo: "/images/chef.jpg", order: 0 },
-    { name: "Dawit Tesfaye", role: "Head of the Grill", bio: "Charcoal whisperer. If the tibs aren't singing when they leave the shekla, they don't leave.", order: 1 },
-    { name: "Hanna Girma", role: "Buna Ceremony Host", bio: "Roasts green beans tableside with the patience of the highlands. Ask her about the third cup.", order: 2 },
-    { name: "Yonas Abebe", role: "General Manager", bio: "Runs the floor like an orchestra — gursha, tej and conversation in perfect time.", order: 3 },
+    { name: "Chef Almaz Bekele", role: "Executive Chef", bio: "Fifteen years at the flame. Trained in her mother's kitchen in Gondar, sharpened on the line. Guards the patty grind and the pizza dough like a national secret.", photo: "/images/chef.jpg", order: 0 },
+    { name: "Dawit Tesfaye", role: "Head of the Grill", bio: "Charcoal whisperer. If the patties aren't singing when they leave the grill, they don't leave.", order: 1 },
+    { name: "Hanna Girma", role: "Shawarma & Buna Host", bio: "Carves the spit with surgical patience and roasts buna tableside. Ask her about the third cup.", order: 2 },
+    { name: "Yonas Abebe", role: "General Manager", bio: "Runs the floor like an orchestra — burgers, buna and conversation in perfect time.", order: 3 },
   ];
   for (const t of team) {
     const exists = await db.teamMember.findFirst({ where: { name: t.name } });
@@ -188,10 +240,10 @@ async function main() {
 
   /* ── Testimonials ── */
   const quotes = [
-    { name: "Selamawit T.", role: "Addis Ababa", quote: "The doro wot tastes like my grandmother's Sunday — but plated like Paris. I cried a little, then ordered more.", order: 0 },
-    { name: "Marcus Bell", role: "Travel writer, London", quote: "Abem is the Ethiopian meal I measure all others against. The buna ceremony alone is worth the flight.", order: 1 },
-    { name: "Hirut M.", role: "Gourmet Club chair", quote: "We came for the kitfo and stayed until the tej ran out. Service feels like family, not staff.", order: 2 },
-    { name: "Daniel Kim", role: "Chef, Seoul", quote: "That shekla tibs — smoke, rosemary, fire — is one of the best plates I ate this year, anywhere.", order: 3 },
+    { name: "Selamawit T.", role: "Addis Ababa", quote: "The flame burger tastes like a five-star kitchen hiding inside a late-night run. I cried a little, then ordered more.", order: 0 },
+    { name: "Marcus Bell", role: "Travel writer, London", quote: "Abem is the burger I measure all others against — and the pizza out-pizzas half of Italy. I keep coming back.", order: 1 },
+    { name: "Hirut M.", role: "Gourmet Club chair", quote: "We came for the shawarma and stayed until the milkshakes ran out. Service feels like family, not staff.", order: 2 },
+    { name: "Daniel Kim", role: "Chef, Seoul", quote: "That wood-fired crust — leopard spots, molten edge — is one of the best plates I ate this year, anywhere.", order: 3 },
   ];
   for (const q of quotes) {
     const exists = await db.testimonial.findFirst({ where: { name: q.name } });
@@ -200,12 +252,12 @@ async function main() {
 
   /* ── FAQs ── */
   const faqs = [
-    { question: "Do you take reservations for the buna ceremony?", answer: "Yes — the ceremony runs tableside all day and every seated table can request it. For groups over 8 we recommend reserving 48 hours ahead so we roast enough beans.", order: 0 },
-    { question: "How spicy is Abem food, really?", answer: "Every dish shows a berbere heat level (0-3). Kitfo and tibs firfir run hot; alicha dishes are mild. Our kitchen will happily adjust — just note it when ordering.", order: 1 },
-    { question: "Is there a full fasting (Tsom) menu?", answer: "Around a third of our menu is fasting: beyaynetu, shiro, misir, gomen, fasting firfir and more. It is a first-class menu, not an afterthought.", order: 2 },
-    { question: "Do you host weddings and corporate events?", answer: "Our garden seats 300 under the lights and our VIP mesobs host private tastings. See the Events page — our team replies within one business day.", order: 3 },
+    { question: "What is Abem known for?", answer: "Our flame kitchen: the Abem Flame Burger, wood-fired pizza, chicken shawarma carved off the spit and crispy fried chicken — all done with restaurant craft at street speed. Our Ethiopian heritage corner (chechebsa, firfir, kitfo, buna) never leaves the menu.", order: 0 },
+    { question: "How spicy is Abem food, really?", answer: "Every dish shows a heat level (0-3). The Berbere Smash Burger and Fasting Firfir run hot; everything else is mild to medium and our kitchen will happily adjust — just note it when ordering.", order: 1 },
+    { question: "Do you have vegan and fasting (Tsom) options?", answer: "Yes — the Garden Veggie Pizza, Fasting Veggie Wrap, Garden Salad, Beyaynetu and Fasting Firfir are all fully vegan, cooked on separate surfaces.", order: 2 },
+    { question: "Do you host birthdays and corporate events?", answer: "Our garden seats 300 under the lights and our VIP booths host private tastings. See the Events page — our team replies within one business day.", order: 3 },
     { question: "Where do you deliver?", answer: "Across Addis Ababa — Bole, Kazanchis, Piassa, CMC and Haya Hulet zones, with landmark-based addresses and live tracking.", order: 4 },
-    { question: "Is the restaurant family friendly?", answer: "Very. Gursha is a family tradition and children are welcome; high chairs and a gentler-spice kids' mesob are always available.", order: 5 },
+    { question: "Is the restaurant family friendly?", answer: "Very. Kids are welcome; high chairs, chicken tenders and a gentler-spice kids' menu are always available.", order: 5 },
   ];
   for (const f of faqs) {
     const exists = await db.faq.findFirst({ where: { question: f.question } });
@@ -214,10 +266,10 @@ async function main() {
 
   /* ── Event packages ── */
   const packs = [
-    { slug: "garden-wedding", title: "The Garden Wedding", description: "A candlelit garden feast for up to 300 guests: grand mesobs, live azmari band, tej bar and a private buna pavilion. Our events team choreographs every gursha.", capacity: "Up to 300 guests", priceFrom: 95000, image: "/images/events.jpg", features: ["Full garden takeover", "Live azmari + krar band", "Custom mesob centerpieces", "Dedicated host team", "Photography corners"] },
-    { slug: "corporate-mesob", title: "Corporate Mesob", description: "Boardroom dinners, launch nights and team feasts. Screen, projector, halal and fasting menus, and an invoice your finance team will love.", capacity: "Up to 80 guests", priceFrom: 35000, image: "/images/interior.jpg", features: ["Private hall + AV", "Set mesob menus from ETB 950", "Fasting & international options", "Company branding on menus", "Receipt & invoice ready"] },
-    { slug: "birthday-habesha", title: "Habesha Birthday Night", description: "A birthday the old way: your table decorated in teff grass, a cake reveal with ember sparklers, and a gift from our kitchen.", capacity: "Up to 30 guests", priceFrom: 12000, image: "/images/music.jpg", features: ["Grass-decorated tables", "Azmari serenade", "Custom spice-level cake menu", "Birthday gift from the chef"] },
-    { slug: "private-vip", title: "The Ember Room (VIP Dining)", description: "One table, one chef, one night. A seven-course tasting of Ethiopia — doro wot consomme, kitfo tartare, tej pairing — for eight seats.", capacity: "8 seats", priceFrom: 28000, image: "/images/chef.jpg", features: ["7-course chef's tasting", "Tej & single-origin buna pairing", "Kitchen tour with the chef", "One booking per night"] },
+    { slug: "garden-wedding", title: "The Garden Wedding", description: "A candlelit garden feast for up to 300 guests: flame-grill stations, pizza oven, live azmari band, tej bar and a private buna pavilion. Our events team choreographs every plate.", capacity: "Up to 300 guests", priceFrom: 95000, image: "/images/events.jpg", features: ["Full garden takeover", "Live azmari + krar band", "Flame-grill & pizza stations", "Dedicated host team", "Photography corners"] },
+    { slug: "corporate-mesob", title: "Corporate Flame Night", description: "Boardroom dinners, launch nights and team feasts. Screen, projector, halal and fasting menus, and an invoice your finance team will love.", capacity: "Up to 80 guests", priceFrom: 35000, image: "/images/interior.jpg", features: ["Private hall + AV", "Set flame menus from ETB 950", "Fasting & international options", "Company branding on menus", "Receipt & invoice ready"] },
+    { slug: "birthday-habesha", title: "Birthday Flame Night", description: "A birthday the Abem way: your booth decorated in teff grass, a cake reveal with ember sparklers, and a gift from our kitchen.", capacity: "Up to 30 guests", priceFrom: 12000, image: "/images/music.jpg", features: ["Grass-decorated booths", "Azmari serenade", "Custom cake menu", "Birthday gift from the chef"] },
+    { slug: "private-vip", title: "The Ember Room (VIP Dining)", description: "One table, one chef, one night. A seven-course tasting of the flame kitchen — dry-aged burger flight, wood-fired tasting pizza, shawarma carving — for eight seats.", capacity: "8 seats", priceFrom: 28000, image: "/images/chef.jpg", features: ["7-course chef's tasting", "Tej & single-origin buna pairing", "Kitchen tour with the chef", "One booking per night"] },
   ];
   for (const p of packs) {
     await db.eventPackage.upsert({ where: { slug: p.slug }, update: { ...p, features: p.features as never }, create: { ...p, features: p.features as never } });
@@ -226,25 +278,25 @@ async function main() {
   /* ── Stories ── */
   const stories = [
     {
+      slug: "the-flame-behind-our-burgers",
+      title: "The Flame Behind Our Burgers",
+      excerpt: "Ground every morning, seared over real fire, stacked with intent. Why our burger line runs like a steakhouse — at street speed.",
+      content: "Every morning at 7 AM the grinder comes out.\n\nChuck and brisket, 80/20, nothing hidden. We grind once — twice and the fat smears, the patty goes dense. Straight into the fridge, straight onto the fire at 11.\n\nThe grill itself runs on real charcoal and wood — the same fire our kitfo kitchen has used for fifteen years. When a patty hits the grates it flares, chars, and takes on the smell that now drifts down Bole Road every lunch hour.\n\nFast food gets away with shortcuts. We don't. The mayo is ember-kissed, the pickles are house-fermented, the brioche arrives warm from our oven. Speed is only impressive when the fire underneath it is real.",
+      cover: "/images/dishes/burger.jpg", category: "kitchen", tags: ["burgers", "grill", "kitchen"], readMinutes: 4, published: true,
+    },
+    {
+      slug: "wood-fired-pizza-addis-style",
+      title: "Wood-Fired Pizza, Addis-Style",
+      excerpt: "Two days of cold fermentation, a 450-degree oven floor, and a berbere-honey chicken pizza that could only happen here.",
+      content: "Our pizza dough ferments for two days in the cold room.\n\nThat is the entire secret. Time does what machines can't: the gluten relaxes, the flavor deepens, the crust blisters into leopard spots at 450 degrees on the oven floor.\n\nMost of our pizzas are classical — the Margherita is sacred territory. But one pizza could only exist in Addis: grilled chicken glazed in berbere honey, red onion, green chili, mozzarella. It is our heritage and our obsession sharing one crust.\n\nAbol, tona, baraka — the same patience our buna ceremony teaches lives in every pizza we fire.",
+      cover: "/images/dishes/pizza.jpg", category: "kitchen", tags: ["pizza", "oven", "kitchen"], readMinutes: 4, published: true,
+    },
+    {
       slug: "the-coffee-ceremony-guide",
       title: "The Buna Ceremony: A Field Guide to Three Cups",
       excerpt: "Abol, tona, baraka. Why the third cup matters, why the grass on the floor smells like every Ethiopian childhood, and how we roast at your table.",
-      content: "There is a moment, about twenty minutes into the ceremony, when the jebena begins to sing.\n\nThe green beans have already been washed and roasted in front of you — the pan pulled off the coals exactly when the first crack quiets. The smoke is folded across the table so you can breathe it. Frankincense has been lit on the coals beside you. The grass scattered on the floor was cut this morning.\n\nAbol arrives first: small, dark, unfiltered. You do not rush it. Tona follows, softer. Baraka, the third cup, is said to confer a blessing — and by then the conversation has stopped being polite and started being true.\n\nAt Abem we run the ceremony tableside because coffee here was never a product. It is choreography, hospitality and time. Thirty unhurried minutes. Come hungry for patience.",
+      content: "There is a moment, about twenty minutes into the ceremony, when the jebena begins to sing.\n\nThe green beans have already been washed and roasted in front of you — the pan pulled off the coals exactly when the first crack quiets. The smoke is folded across the table so you can breathe it. Frankincense has been lit on the coals beside you. The grass scattered on the floor was cut this morning.\n\nAbol arrives first: small, dark, unfiltered. You do not rush it. Tona follows, softer. Baraka, the third cup, is said to confer a blessing — and by then the conversation has stopped being polite and started being true.\n\nAt Abem we run the ceremony tableside because coffee here was never a product. It is choreography, hospitality and time. Thirty unhurried minutes. Come hungry for patience — it pairs beautifully with a flame burger.",
       cover: "/images/coffee-ceremony.jpg", category: "culture", tags: ["coffee", "ceremony", "culture"], readMinutes: 5, published: true,
-    },
-    {
-      slug: "injera-soul-of-the-table",
-      title: "Injera: The Soul of the Table",
-      excerpt: "Teff from Gojjam, three days of fermentation, and the plate that is also the cutlery. A love letter to the hardest working flatbread on earth.",
-      content: "Ask any Ethiopian what they miss most when abroad. Injera. Always injera.\n\nOurs starts with teff from the Gojjam highlands — the smallest grain on earth, iron-rich and gluten-free. The batter ferments for three days in clay; the slurry bubbles like a small weather system. When the mitad is right, one pour, one swirl, one hundred and eighty seconds, and the bread lifts with a thousand eyes staring back.\n\nInjera is plate, fork and napkin in one. You eat from the same platter as your family — and gursha, the act of feeding another by hand, turns a meal into an embrace.\n\nWe bake every morning. By noon the smell reaches the street. That smell is the front door of this house.",
-      cover: "/images/dishes/beyaynetu.jpg", category: "craft", tags: ["injera", "teff", "craft"], readMinutes: 4, published: true,
-    },
-    {
-      slug: "behind-abems-berbere",
-      title: "Behind Abem's Berbere: Sixteen Spices, One Flame",
-      excerpt: "We toast and grind our berbere weekly. Meet the sixteen spices, the market women who supply them, and the stew pot that never truly goes cold.",
-      content: "The base of everything we cook is berbere — and ours is not bought.\n\nEvery Monday, before service, we toast and grind sixteen spices: chili from the south, garlic and ginger dried on the roof, fenugreek, cardamom, korarima, rue, ajwain, sacred basil. The kitchen smells like a spice market having a good dream.\n\nDoro wot begins with four kilograms of onions sweating in niter kibbeh — clarified butter simmered with besobela and koseret until it smells like a highland meadow. Six hours later, the sauce has gone from gold to rust to deep red-brown. The egg is marinated in lime and berbere overnight.\n\nChef Almaz tasted it this morning and said: 'Close. Tomorrow, perfect.' That is the standard. It never ends.",
-      cover: "/images/spices.jpg", category: "kitchen", tags: ["berbere", "spices", "kitchen"], readMinutes: 6, published: true,
     },
   ];
   for (const s of stories) {
@@ -253,9 +305,9 @@ async function main() {
 
   /* ── Careers ── */
   const openings = [
-    { title: "Waiter / Waitress", type: "FULL_TIME", description: "Run the floor with warmth and precision. Gursah etiquette training provided. Prior experience loved, attitude required.", order: 0 },
-    { title: "Line Cook — Grill Station", type: "FULL_TIME", description: "Charcoal grill and shekla work under Dawit. Knife skills and heat tolerance essential.", order: 1 },
-    { title: "Buna Ceremony Host", type: "FULL_TIME", description: "Roast, pour and tell the story of Ethiopian coffee at guest tables. English and Amharic.", order: 2 },
+    { title: "Waiter / Waitress", type: "FULL_TIME", description: "Run the floor with warmth and precision. Service etiquette training provided. Prior experience loved, attitude required.", order: 0 },
+    { title: "Line Cook — Flame Grill", type: "FULL_TIME", description: "Burgers, chicken and shawarma on a live fire line under Dawit. Knife skills and heat tolerance essential.", order: 1 },
+    { title: "Pizza Station Cook", type: "FULL_TIME", description: "Wood oven work: stretching two-day dough, firing pies at 450 degrees. Pizza craft training provided.", order: 2 },
     { title: "Delivery Rider", type: "PART_TIME", description: "Motorbike courier for Abem Flow delivery zones. Know Addis shortcuts? We need you.", order: 3 },
   ];
   for (const o of openings) {
